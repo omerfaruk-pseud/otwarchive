@@ -132,9 +132,11 @@ describe Series do
   describe "#fandoms" do
     let(:restricted_work) { create(:work, restricted: true, fandom_string: "Testing2") }
     let(:hidden_work) { create(:work, hidden_by_admin: true, fandom_string: "Testing3") }
+    let(:draft_writer) { create(:user) }
+    let(:draft) { create(:work, posted: false, fandom_string: "Testing4", authors: draft_writer.pseuds)}
 
     before do
-      series.works = [unrestricted_work, restricted_work, hidden_work]
+      series.works = [unrestricted_work, restricted_work, hidden_work, draft]
       series.reload
     end
 
@@ -143,6 +145,7 @@ describe Series do
         expect(series.fandoms).to include(*unrestricted_work.fandoms)
         expect(series.fandoms).not_to include(*restricted_work.fandoms)
         expect(series.fandoms).not_to include(*hidden_work.fandoms)
+        expect(series.fandoms).not_to include(*draft.fandoms)        
       end
     end
 
@@ -155,6 +158,20 @@ describe Series do
         expect(series.fandoms).to include(*unrestricted_work.fandoms)
         expect(series.fandoms).to include(*restricted_work.fandoms)
         expect(series.fandoms).not_to include(*hidden_work.fandoms)
+        expect(series.fandoms).not_to include(*draft.fandoms)
+      end
+    end
+
+        context "when logged in as draft's writer" do
+      before do
+        User.current_user = draft_writer
+      end
+
+      it "return tags on unrestricted and restricted works and drafts" do
+        expect(series.fandoms).to include(*restricted_work.fandoms)
+        expect(series.fandoms).to include(*unrestricted_work.fandoms)
+        expect(series.fandoms).not_to include(*hidden_work.fandoms)
+        expect(series.fandoms).to include(*draft.fandoms)
       end
     end
 
@@ -163,10 +180,11 @@ describe Series do
         User.current_user = create(:admin)
       end
 
-      it "returns fandoms on unrestricted, restricted, and hidden works" do
+      it "returns fandoms on unrestricted, restricted, and hidden works and drafts" do
         expect(series.fandoms).to include(*unrestricted_work.fandoms)
         expect(series.fandoms).to include(*restricted_work.fandoms)
         expect(series.fandoms).to include(*hidden_work.fandoms)
+        expect(series.fandoms).to include(*draft.fandoms)
       end
     end
   end
@@ -174,7 +192,8 @@ describe Series do
   describe "#tag_groups" do
     let(:restricted_work) { create(:work, restricted: true, fandom_string: "Testing2") }
     let(:hidden_work) { create(:work, hidden_by_admin: true, fandom_string: "Testing3") }
-    let(:draft) { create(:draft, fandom_string: "Testing4", writer: "draft_writer")}
+    let(:draft_writer) { create(:user) }
+    let(:draft) { create(:work, posted: false, fandom_string: "Testing4", authors: draft_writer.pseuds)}
 
     before do
       series.works = [unrestricted_work, restricted_work, hidden_work, draft]
@@ -213,6 +232,8 @@ describe Series do
         expect(series.tag_groups["Fandom"]).to include(*restricted_work.fandoms)
         expect(series.tag_groups["Fandom"]).not_to include(*hidden_work.fandoms)
         expect(series.tag_groups["Fandom"]).to include(*draft.fandoms)
+      end
+    end
 
     context "when logged in as an admin" do
       before do
