@@ -162,7 +162,7 @@ describe Series do
       end
     end
 
-        context "when logged in as draft's writer" do
+    context "when logged in as draft's writer" do
       before do
         User.current_user = draft_writer
       end

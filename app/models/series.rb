@@ -206,6 +206,12 @@ class Series < ApplicationRecord
     tags = self.work_tags
     tags = tags.where(works: { restricted: false }) unless User.current_user
     tags = tags.where(works: { hidden_by_admin: false }) unless User.current_user.is_a?(Admin)
+    tags = tags.where(works: { posted: true }) unless User.current_user.is_a?(Admin)
+
+    #unposted_work_tags = tags.where(works: { posted: false})
+    #if not user is author nor admin, filter only posted works.  
+    #tags = tags.where.not(works: { posted: false, pseuds: User.current_user}) unless User.current_user.is_a?(Admin)
+
     tags.group_by { |t| t.type.to_s }
   end
 
