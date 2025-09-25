@@ -195,7 +195,7 @@ class Series < ApplicationRecord
 
   # returns list of fandoms on this series
   def fandoms
-    tag_groups["Fandom"].sort
+    tag_groups["Fandom"]&.sort || []
   end
 
   def author_tags
@@ -203,16 +203,9 @@ class Series < ApplicationRecord
   end
 
   def tag_groups
-    tags = self.work_tags
-    tags = tags.where(works: { restricted: false }) unless User.current_user
-    tags = tags.where(works: { hidden_by_admin: false }) unless User.current_user.is_a?(Admin)
-    tags = tags.where(works: { posted: true }) unless User.current_user.is_a?(Admin)
-
-    #unposted_work_tags = tags.where(works: { posted: false})
-    #if not user is author nor admin, filter only posted works.  
-    #tags = tags.where.not(works: { posted: false, pseuds: User.current_user}) unless User.current_user.is_a?(Admin)
-
-    tags.group_by { |t| t.type.to_s }
+    self.work_tags
+      .where(works: { restricted: false, hidden_by_admin: false })
+      .group_by { |t| t.type.to_s }
   end
 
   # Grabs the earliest published_at date of the visible works in the series

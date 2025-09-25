@@ -134,6 +134,51 @@ Feature: Collection
     And I should not see "Surprise Presents"
     And I should not see "On Demand"
 
+  Scenario: Can't filter collections index by collection name
+
+    Given a set of collections for searching
+    When I go to the collections page
+      And I fill in "collection_search_title" with "demandtest"
+      And I press "Sort and Filter"
+    Then I should not see "Another Plain Collection"
+      And I should not see "Another Gift Swap"
+      And I should not see "Some Test Collection"
+      And I should not see "Some Other Collection"
+      And I should not see "Surprise Presents"
+      And I should not see "On Demand"
+
+  @javascript
+  Scenario: Filter collections index by collection name using autocomplete
+
+    Given a set of collections for searching
+    When I go to the collections page
+      And I enter "demandte" in the "Filter by title" autocomplete field
+    Then I should see "demandtest: On Demand" in the autocomplete
+    When I choose "demandtest: On Demand" from the "Filter by title" autocomplete
+      And I press "Sort and Filter"
+    Then I should see "On Demand"
+      But I should not see "Another Gift Swap"
+      And I should not see "Another Plain Collection"
+      And I should not see "Some Test Collection"
+      And I should not see "Some Other Collection"
+      And I should not see "Surprise Presents"
+
+  @javascript
+  Scenario: Filter collections index by collection title using autocomplete
+
+    Given a set of collections for searching
+    When I go to the collections page
+      And I enter "Gift" in the "Filter by title" autocomplete field
+    Then I should see "swaptest: Another Gift Swap" in the autocomplete
+    When I choose "swaptest: Another Gift Swap" from the "Filter by title" autocomplete
+    And I press "Sort and Filter"
+    Then I should see "Another Gift Swap"
+      But I should not see "On Demand"
+      And I should not see "Another Plain Collection"
+      And I should not see "Some Test Collection"
+      And I should not see "Some Other Collection"
+      And I should not see "Surprise Presents"
+
   Scenario: Filter collections by non-canonical and non-existent collection tags
 
   Given a set of collections for searching
@@ -192,7 +237,7 @@ Feature: Collection
       And I follow "Collection1"
     Then I should see an HTML comment containing the number 1744477200 within "li.work.blurb"
 
-  Scenario: Collection item counts show the correct amount for guests and registered users
+  Scenario: Collection item counts show the correct amount for guests, registered users and admins
 
   Given I have a collection "Item Counts"
   When I am logged in as the owner of "Item Counts"
@@ -208,6 +253,11 @@ Feature: Collection
   Then I should see the text with tags '<a href="/collections/Item_Counts/works">3</a>'
     And I should see the text with tags '<a href="/collections/Item_Counts/bookmarks">2</a>'
     And I should see the text with tags '<a href="/collections/Item_Counts/collections">1</a>'
+  When I am logged in as a super admin
+    And I go to the collections page
+  Then I should see the text with tags '<a href="/collections/Item_Counts/works">3</a>'
+    And I should see the text with tags '<a href="/collections/Item_Counts/bookmarks">2</a>'
+    And I should see the text with tags '<a href="/collections/Item_Counts/collections">1</a>'
   When I log out
     And I go to the collections page
   Then I should see the text with tags '<a href="/collections/Item_Counts/works">1</a>'
@@ -218,6 +268,11 @@ Feature: Collection
     And I bookmark the work "Public 2" to the collection "Item Counts"
     And the collection "Sub Count" is deleted
     And all indexing jobs have been run
+    And I go to the collections page
+  Then I should see the text with tags '<a href="/collections/Item_Counts/works">4</a>'
+    And I should see the text with tags '<a href="/collections/Item_Counts/bookmarks">3</a>'
+    And I should not see "Challenges/Subcollections:" within ".stats"
+  When I am logged in as a super admin
     And I go to the collections page
   Then I should see the text with tags '<a href="/collections/Item_Counts/works">4</a>'
     And I should see the text with tags '<a href="/collections/Item_Counts/bookmarks">3</a>'
