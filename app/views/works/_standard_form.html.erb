@@ -315,11 +315,11 @@
         <%= ts("<strong>Note:</strong> Text entered in the posting form is <strong>not</strong> automatically saved. Always keep a backup copy of your work.").html_safe %>
       </p>
 
-      <% use_tinymce %>
         <div class="rtf-html-field">
           <h4 class="landmark heading"><%= ts("Work Text") %>*</h4>
-          <%= c.text_area :content, value: @chapter.content,
-                class: "mce-editor observe_textlength large", id: "content" %>
+          <%= stylesheet_link_tag "lexxy" %>
+          <%= c.rich_text_area :content, value: @chapter.content,
+                         id: "content" %>
           <%= live_validation_for_field("content",
             maximum_length: ArchiveConfig.CONTENT_MAX_DISPLAYED,
             minimum_length: ArchiveConfig.CONTENT_MIN,

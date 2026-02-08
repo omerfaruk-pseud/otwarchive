@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 ruby "~> 3.4.6"
 
+gem 'lexxy', '~> 0.1.26.beta' # Need to specify the version since it's a pre-release
+
 gem 'test-unit', '~> 3.2'
 
 gem 'bundler'
@@ -9,7 +11,7 @@ gem 'bundler'
 gem "rails", "~> 8.0.0"
 gem "rails-i18n", "~> 8.0", git: "https://github.com/svenfuchs/rails-i18n", ref: "54c1c7c2fdcc311427ec6f1dadd298a60db1ddef"
 gem "rack", "~> 2.2"
-gem "sprockets", "< 4"
+gem "propshaft"
 
 gem 'rails-observers', git: 'https://github.com/rails/rails-observers'
 gem 'actionpack-page_caching'
@@ -186,3 +188,5 @@ end
 
 gem "image_processing", "~> 1.12"
 gem "ostruct"
+
+gem "importmap-rails", "~> 2.2"
