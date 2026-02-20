@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/brianjaustin/lexxy.git
+  revision: 2ce8d50f3b4c541e27975c285efb6463bde5c153
+  ref: 2ce8d50f3b4c541e27975c285efb6463bde5c153
+  specs:
+    lexxy (0.7.4.beta)
+      rails (>= 8.0.2)
+
+GIT
   remote: https://github.com/rails/rails-observers
   revision: 389b577322d8b17336730b2dc4e179060a23c8e7
   specs:
@@ -349,8 +357,6 @@ GEM
     kgio (2.10.0)
     launchy (2.5.2)
       addressable (~> 2.8)
-    lexxy (0.1.26.beta)
-      rails (>= 8.0.2)
     logger (1.7.0)
     lograge (0.14.0)
       actionpack (>= 4)
@@ -745,7 +751,7 @@ DEPENDENCIES
   importmap-rails (~> 2.2)
   kgio (= 2.10.0)
   launchy
-  lexxy (~> 0.1.26.beta)
+  lexxy!
   lograge
   marcel (= 1.0.2)
   mechanize

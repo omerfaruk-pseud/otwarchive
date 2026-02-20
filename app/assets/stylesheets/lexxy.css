@@ -1,0 +1,6 @@
+@import url("lexxy-variables.css");
+@import url("lexxy-content.css");
+@import url("lexxy-editor.css");
+summary[name=highlight] { display: none; }
+summary[name=link] { max-height: 2px; }
+details[name=lexxy-dropdown] {max-heigth: 2px; }

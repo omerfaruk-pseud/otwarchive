@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby "~> 3.4.6"
 
-gem 'lexxy', '~> 0.1.26.beta' # Need to specify the version since it's a pre-release
+gem "lexxy", git: "https://github.com/brianjaustin/lexxy.git", ref: "2ce8d50f3b4c541e27975c285efb6463bde5c153"
 
 gem 'test-unit', '~> 3.2'
 
