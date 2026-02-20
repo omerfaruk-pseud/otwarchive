@@ -3,7 +3,6 @@
 @import url("lexxy-editor.css");
 summary[name=highlight] { display: none; }
 summary[name=link] { max-height: 0px; }
-details[name=lexxy-dropdown] { max-heigth: 0px; }
+details[name=lexxy-dropdown] { max-height: 0px; }
 details[class="lexxy-editor__toolbar-overflow"] { max-height: 0px; }
 button[name=code] { display: none; }
-lexxy-toolbar { min_height: %200 }
