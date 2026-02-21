@@ -315,11 +315,9 @@
         <%= ts("<strong>Note:</strong> Text entered in the posting form is <strong>not</strong> automatically saved. Always keep a backup copy of your work.").html_safe %>
       </p>
 
-      <% use_tinymce %>
         <div class="rtf-html-field">
           <h4 class="landmark heading"><%= ts("Work Text") %>*</h4>
-          <%= c.text_area :content, value: @chapter.content,
-                class: "mce-editor observe_textlength large", id: "content" %>
+          <div data-controller="tiptap"></div>
           <%= live_validation_for_field("content",
             maximum_length: ArchiveConfig.CONTENT_MAX_DISPLAYED,
             minimum_length: ArchiveConfig.CONTENT_MIN,
@@ -330,7 +328,6 @@
             failureMessage: ts("Brevity is the soul of wit, but your content does have to be at least %{min} characters long.",
               min: ArchiveConfig.CONTENT_MIN.to_s))
           %>
-
           <%= generate_countdown_html("content", ArchiveConfig.CONTENT_MAX_DISPLAYED) %>
         </div>
       </fieldset>
