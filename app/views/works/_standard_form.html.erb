@@ -323,7 +323,20 @@
             data-blob-url-template="<%= rails_service_blob_url(":signed_id", ":filename") %>"
             data-direct-upload-url="<%= rails_direct_uploads_url %>"
           ></rhino-editor>
+          <script>
+              function removeCode () {
+                  const rhinoEditor = document.querySelector("rhino-editor")
 
+                  if (rhinoEditor == null) return
+
+                  rhinoEditor.starterKitOptions = {
+                      ...rhinoEditor.starterKitOptions,
+                      codeBlock: false
+                  }
+              }
+
+              document.addEventListener("rhino-before-initialize", removeCode)
+          </script>
           <%= live_validation_for_field("content",
             maximum_length: ArchiveConfig.CONTENT_MAX_DISPLAYED,
             minimum_length: ArchiveConfig.CONTENT_MIN,
