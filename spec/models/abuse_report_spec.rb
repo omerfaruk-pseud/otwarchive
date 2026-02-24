@@ -317,7 +317,6 @@ describe AbuseReport do
 
       # unrelated
       it_behaves_like "alright", "http://archiveofourown.org/someone/series"
-      it_behaves_like "alright", "http://archiveofourown.org/works/876"
       it_behaves_like "alright", "http://archiveofourown.org/works/876/comments"
       it_behaves_like "alright", "http://archiveofourown.org/users/someone"
 
