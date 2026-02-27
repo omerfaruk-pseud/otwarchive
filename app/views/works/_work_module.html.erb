@@ -1,5 +1,4 @@
 <% # expects "work" %>
-<%= require pry; binding.pry %>
 <% if work.unrevealed? && !is_author_of?(work) && !(User.current_user.is_a?(Admin) && current_page?(controller: "works", action: "collected")) %>
   <%= render "works/mystery_blurb", item: work %>
 <% else %>
