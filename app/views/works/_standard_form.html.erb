@@ -315,11 +315,31 @@
         <%= ts("<strong>Note:</strong> Text entered in the posting form is <strong>not</strong> automatically saved. Always keep a backup copy of your work.").html_safe %>
       </p>
 
-      <% use_tinymce %>
+      <%= javascript_include_tag "application", defer: true %>
         <div class="rtf-html-field">
           <h4 class="landmark heading"><%= ts("Work Text") %>*</h4>
-          <%= c.text_area :content, value: @chapter.content,
-                class: "mce-editor observe_textlength large", id: "content" %>
+          <button id="bold" type="button">Bold</button>
+          <button id="italic" type="button">Italic</button>
+          <button id="underline" type="button">Underline</button>
+          <button id="strikethrough" type="button">Strikethrough</button>
+          <button id="set_link" type="button">Set Link</button>
+          <button id="remove_link" type="button">Remove Link</button>
+          <button id="image" type="button">Insert/Edit Image</button>
+          <button id="blockquote" type="button">Blockquote</button>
+          <button id="horizontal_rule" type="button">Horizontal Rule</button>
+          <button id="unordered_list" type="button">Unordered List</button>
+          <button id="ordered_list" type="button">Ordered List</button>
+          <button id="align_left" type="button">Align Left</button>
+          <button id="align_center" type="button">Align Center</button>
+          <button id="align_right" type="button">Align Right</button>
+          <button id="justify" type="button">Justify</button>
+          <button id="undo" type="button">Undo</button>
+          <button id="redo" type="button">Redo</button>
+          <button id="left_to_right" type="button">Left To Right</button>
+          <button id="right_to_left" type="button">Right To Left</button>
+          <div class="tiptap" ></div>
+          <%= c.hidden_field :content, value: @chapter.content,
+                          class: "chapter-content", id: c.field_id(:content) %>
           <%= live_validation_for_field("content",
             maximum_length: ArchiveConfig.CONTENT_MAX_DISPLAYED,
             minimum_length: ArchiveConfig.CONTENT_MIN,
