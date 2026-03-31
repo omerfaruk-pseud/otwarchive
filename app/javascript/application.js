@@ -44,25 +44,28 @@ const postProcessQuill = (quill) => {
         quill.setSelection(range.index, 0, "user");
     });
 };
+if (!this.quill) {
 
-const quill = new Quill('#editor', {
-    modules: {
-        toolbar: [
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            [
-                'bold', 'italic', 'underline', 'strike', 'link'
+    const quill = new Quill('#editor', {
+        modules: {
+            toolbar: [
+                [{'header': [1, 2, 3, 4, 5, 6, false]}],
+                [
+                    'bold', 'italic', 'underline', 'strike', 'link'
+                ],
+                ['image', 'blockquote', 'divider'],
+                [{'list': 'bullet'}, {'list': 'ordered'}],
+                [{'align': ['center', 'right', 'justify', false]}],
+                ['undo', 'redo'],
+                [{'direction': 'rtl'}],
             ],
-            ['image', 'blockquote', 'divider'],
-            [{ 'list': 'bullet' }, { 'list': 'ordered' }],
-            [{ 'align': ['center', 'right', 'justify', false] }],
-            ['undo' , 'redo' ],
-            [{ 'direction': 'rtl' }],
-        ],
-        history: []
-    },
-    formats: ['header', 'bold', 'italic', 'underline', 'strike', 'link', 'image', 'blockquote', 'divider', 'list', 'align', 'direction'],
-    theme: 'snow'
-});
+            history: []
+        },
+        formats: ['header', 'bold', 'italic', 'underline', 'strike', 'link', 'image', 'blockquote', 'divider', 'list', 'align', 'direction'],
+        theme: 'snow'
+    });
+}
+
 postProcessQuill(quill);
 
 quill.setText(document.querySelector('input[class=chapter-content]').value);
