@@ -44,8 +44,8 @@ const postProcessQuill = (quill) => {
         quill.setSelection(range.index, 0, "user");
     });
 };
-if (!this.quill) {
 
+if (!this.quill) {
     const quill = new Quill('#editor', {
         modules: {
             toolbar: [
@@ -64,13 +64,14 @@ if (!this.quill) {
         formats: ['header', 'bold', 'italic', 'underline', 'strike', 'link', 'image', 'blockquote', 'divider', 'list', 'align', 'direction'],
         theme: 'snow'
     });
+
+    postProcessQuill(quill);
+
+    quill.setText(document.querySelector('input[class=chapter-content]').value);
+
+    quill.on('text-change', (delta, oldDelta, source) => {
+        var body = document.querySelector('input[class=chapter-content]');
+        body.value = quill.getSemanticHTML(0);
+    });
 }
 
-postProcessQuill(quill);
-
-quill.setText(document.querySelector('input[class=chapter-content]').value);
-
-quill.on('text-change', (delta, oldDelta, source) => {
-    var body = document.querySelector('input[class=chapter-content]');
-    body.value = quill.getSemanticHTML(0);
-});
