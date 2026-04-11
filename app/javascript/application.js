@@ -4,6 +4,65 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 const BlockEmbed = Quill.import("blots/block/embed");
 
+
+const Parchment = Quill.import('parchment');
+
+class CustomAlignAttributor extends Parchment.Attributor {
+    constructor(attrName, keyName, whitelist) {
+        super(attrName, keyName, { whitelist });
+    }
+
+    add(node, value) {
+        if (!(node instanceof HTMLElement)) {
+            return false;
+        }
+
+        // Clear any existing alignment classes
+        this.remove(node);
+
+        if (value === 'center') {
+            node.setAttribute("align", "center");
+        } else if (value === 'right') {
+            node.setAttribute("align", "right");
+        } else if (value === 'justify') {
+            node.setAttribute("align", "justify");
+        } else {
+            this.remove(node);
+        }
+
+        return true;
+    }
+
+    remove(node) {
+        if (!(node instanceof HTMLElement)) {
+            return;
+        }
+        node.removeAttribute("align");
+    }
+
+    value(node) {
+        if (!(node instanceof HTMLElement)) {
+            return false;
+        }
+        if (node.getAttribute("align") === "center") {
+            return 'center';
+        } else if (node.getAttribute("align") === "right") {
+            return 'right';
+        } else if (node.getAttribute("align") === "justify") {
+            return 'justify';
+        }
+
+        // Return false if no specific alignment class is found (Quill expects false or a value)
+        return false;
+    }
+}
+
+Quill.register(
+    'formats/align',
+    new CustomAlignAttributor('align', 'ql-align', ['center', 'right', 'justify']),
+    true
+);
+
 // register Quill divider Blot:
 
 class DividerBlot extends BlockEmbed {
@@ -67,11 +126,11 @@ if (!this.quill) {
 
     postProcessQuill(quill);
 
-    quill.setText(document.querySelector('input[class=chapter-content]').value);
+    quill.clipboard.dangerouslyPasteHTML(0, document.querySelector('input[class=chapter-content]').value);
 
     quill.on('text-change', (delta, oldDelta, source) => {
         var body = document.querySelector('input[class=chapter-content]');
-        body.value = quill.getSemanticHTML(0);
+        body.value = quill.root.innerHTML;
     });
 }
 
