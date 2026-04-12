@@ -17,7 +17,7 @@ class CustomAlignAttributor extends Parchment.Attributor {
             return false;
         }
 
-        // Clear any existing alignment classes
+        // Clear any existing alignment attributes
         this.remove(node);
 
         if (value === 'center') {
@@ -52,10 +52,58 @@ class CustomAlignAttributor extends Parchment.Attributor {
             return 'justify';
         }
 
-        // Return false if no specific alignment class is found (Quill expects false or a value)
+        // Return false if no specific alignment attribute is found (Quill expects false or a value)
         return false;
     }
 }
+
+class CustomDirectionAttributor extends Parchment.Attributor {
+    constructor(attrName, keyName, whitelist) {
+        super(attrName, keyName, { whitelist });
+    }
+
+    add(node, value) {
+        if (!(node instanceof HTMLElement)) {
+            return false;
+        }
+
+        // Clear any existing direction attributes
+        this.remove(node);
+
+        if (value === 'rtl') {
+            node.setAttribute("dir", "rtl");
+        } else {
+            this.remove(node);
+        }
+
+        return true;
+    }
+
+    remove(node) {
+        if (!(node instanceof HTMLElement)) {
+            return;
+        }
+        node.removeAttribute("dir");
+    }
+
+    value(node) {
+        if (!(node instanceof HTMLElement)) {
+            return false;
+        }
+        if (node.getAttribute("dir") === "rtl") {
+            return 'rtl';
+        }
+
+        // Return false if no specific direction attributes is found (Quill expects false or a value)
+        return false;
+    }
+}
+
+Quill.register(
+    'formats/direction',
+    new CustomDirectionAttributor('direction', 'ql-direction', ['rtl']),
+    true
+);
 
 Quill.register(
     'formats/align',
