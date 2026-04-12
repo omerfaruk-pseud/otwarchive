@@ -25,6 +25,17 @@ const TextAlign = Extension.create({
             },
         ]
     },
+    addCommands() {
+        return {
+            setTextAlign:
+                (alignment) =>
+                    ({ commands }) => {
+                        return this.options.types
+                            .map(type => commands.updateAttributes(type, { textAlign: alignment }))
+                            .some(response => response)
+                    },
+        }
+    },
 })
 
 
