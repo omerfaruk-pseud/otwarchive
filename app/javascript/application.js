@@ -2,8 +2,32 @@
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
-import TextAlign from '@tiptap/extension-text-align'
 import { TableKit } from '@tiptap/extension-table'
+
+import { Extension } from '@tiptap/core'
+
+const TextAlign = Extension.create({
+    addGlobalAttributes() {
+        return [
+            {
+                // Extend the following extensions
+                types: ['heading', 'paragraph'],
+                // … with those attributes
+                attributes: {
+                    textAlign: {
+                        default: 'left',
+                        renderHTML: (attributes) => ({
+                            align: `${attributes.textAlign}`,
+                        }),
+                        parseHTML: (element) => element.style.textAlign || 'left',
+                    },
+                },
+            },
+        ]
+    },
+})
+
+
 
 const editor = new Editor({
     element: document.querySelector('.tiptap'),
@@ -15,10 +39,9 @@ const editor = new Editor({
         }),
         TableKit
     ],
-    textDirection: 'auto',
     onUpdate: ({ editor }) => {
-    	var content = document.querySelector('input[class=chapter-content]')
-	    content.value = editor.getHTML()
+    	var content = document.querySelector('input[class=chapter-content]');
+	    content.value = editor.getHTML();
     },
     content: document.querySelector('input[class=chapter-content]').value
 });
