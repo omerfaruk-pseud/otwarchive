@@ -1101,7 +1101,7 @@ class Tag < ApplicationRecord
     self_type = %w[Character Fandom Media].include?(self.type) ? self.type.downcase : "fandom"
     TagQuery.new(options.merge(
                    type: tag_type,
-                   unwrangleable: false,
+                   wrangling_status: "wrangleable",
                    wrangled: false,
                    has_posted_works: true,
                    "pre_#{self_type}_ids": [self.id],
@@ -1286,6 +1286,6 @@ class Tag < ApplicationRecord
   end
 
   def normalize_for_tag_comparison(string)
-    string.downcase(:fold).mb_chars.unicode_normalize(:nfkd).gsub(/[\u0300-\u036F]/u, "")
+    string.downcase(:fold).unicode_normalize(:nfkd).gsub(/[\u0300-\u036F]/u, "")
   end
 end
