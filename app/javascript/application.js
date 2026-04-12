@@ -19,7 +19,7 @@ const TextAlign = Extension.create({
                         renderHTML: (attributes) => ({
                             align: `${attributes.textAlign}`,
                         }),
-                        parseHTML: (element) => element.style.textAlign || 'left',
+                        parseHTML: (element) => element.style.textAlign || element.align,
                     },
                 },
             },
