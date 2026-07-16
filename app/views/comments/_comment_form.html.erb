@@ -93,7 +93,8 @@
       <p>
         <% content_id = "comment_content_for_#{commentable.id}" %>
         <label for="<%= content_id %>" class="landmark"><%= t(".landmark.comment") %></label>
-        <%= f.text_area :comment_content, id: content_id, class: "comment_form observe_textlength", title: t(".comment_field_title") %>
+        <%= stylesheet_link_tag "lexxy" %>
+        <%= f.rich_text_area :comment_content, id: content_id, class: "comment_form observe_textlength", title: t(".comment_field_title") %>
         <input type="hidden" id="controller_name_for_<%= commentable.id %>" name="controller_name" value="<%= @controller_name ||= controller.controller_name %>" />
       </p>
       <%= generate_countdown_html("comment_content_for_#{commentable.id}", ArchiveConfig.COMMENT_MAX) %>
