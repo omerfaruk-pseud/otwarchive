@@ -2,6 +2,63 @@
 https://otwcode.github.io/docs/stylesheets-views.html#elements
 */
 
+
+.lexxy-editor__content {
+  ul, ol, dl, li {
+    list-style: revert;
+    margin: revert;
+    padding: revert;
+  }
+}
+
+:where(lexxy-editor) {
+  /*
+  lexxy-toolbar-dropdown,
+  button[name="highlight"],
+  button[name="file"],
+  button[name="table"],
+  button[name="code"] {
+    display: none;
+  }
+  button[name="bold"] {
+    order: -12;
+  }
+  button[name="italic"] {
+    order: -11;
+  }
+  button[name="underline"] {
+    order: -10;
+  }
+  button[name="strikethrough"] {
+    order: -9;
+  }
+  lexxy-link-dropdown {
+    order: -8;
+  }
+  button[name="image"] {
+    order: -7;
+  }
+  button[name="quote"] {
+    order: -6;
+  }
+  button[name="divider"] {
+    order: -5;
+  }
+  button[name="unordered-list"] {
+    order: -4;
+  }
+  button[name="ordered-list"] {
+    order: -3;
+  }
+  button[name="undo"] {
+    order: -2;
+  }
+  button[name="redo"] {
+    order: -1;
+  }
+*/
+}
+
 /* MEYERS RESET. *********************************************** do not edit */
 
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
