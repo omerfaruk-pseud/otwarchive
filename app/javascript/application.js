@@ -32,8 +32,13 @@ Lexxy.configure({
 const editor = document.querySelector("lexxy-editor")
 editor.addEventListener("lexxy:focus", (event) =>
     {
-        if(editor.querySelector("button[name='file']")) {
-            editor.querySelectorAll("lexxy-toolbar-dropdown:not(.lexxy-editor__toolbar-overflow), button[name=\"highlight\"], button[name=\"file\"], button[name=\"table\"], button[name=\"code\"]").forEach((elem) => elem.parentNode.removeChild(elem));
+    let selectors = "lexxy-toolbar-dropdown:not(.lexxy-editor__toolbar-overflow), " +
+        "button[name=\"highlight\"], " +
+        "button[name=\"file\"], " +
+        "button[name=\"table\"], " +
+        "button[name=\"code\"]"
+        if(editor.querySelectorAll(selectors)) {
+            editor.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem));
         }
     }
 );
