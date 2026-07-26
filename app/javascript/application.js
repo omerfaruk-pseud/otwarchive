@@ -29,19 +29,34 @@ Lexxy.configure({
     }
 })
 
-const editor = document.querySelector("lexxy-editor")
+let editor = document.querySelector("lexxy-editor")
 editor.addEventListener("lexxy:focus", (event) =>
     {
     let selectors = "lexxy-toolbar-dropdown:not(.lexxy-editor__toolbar-overflow), " +
+        "lexxy-highlight-dropdown, " +
         "button[name=\"highlight\"], " +
         "button[name=\"file\"], " +
         "button[name=\"table\"], " +
         "button[name=\"code\"]"
-        if(editor.querySelectorAll(selectors)) {
-            editor.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem));
+        if(editor.querySelectorAll(selectors).length > 0) {
+            editor.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem)); // for IE compatibility
+            let toolbar=document.querySelector("lexxy-toolbar");
+            let children=toolbar.children;
+            let newOrder=[7,12,11,9,10,8,6,4,3,5,2,1];
+            for(let i=0;i<newOrder.length;i++) {
+                for (let j = 0; j < newOrder.length; j++) {
+                    if (i == newOrder[j]) {
+                        // toolbar.appendChild(children[j]);
+                        break;
+                    }
+                }
+            }
         }
     }
 );
+
+
+
 // No Bold Extension
 
 /* class NoBoldExtension extends Lexxy.Extension {
