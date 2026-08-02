@@ -71,7 +71,14 @@
           <% comment.set_parent_and_unreviewed %>
           <% comment.pseud = current_user.default_pseud %>
         <% end %>
-        <p class="footnote"><%= allowed_html_instructions(strip_images: comment.use_image_safety_mode?) %></p>
+        <ul class="rtf-html-switch actions" role="menu">
+          <li><a class="rtf-link" href="#"><%= ts("Rich Text") %></a></li>
+          <li><a class="html-link" href="#"><%= ts("HTML") %></a></li>
+        </ul>
+        <p class="rtf-html-instructions note">
+          <span class="html-notes"><%= allowed_html_instructions %></span>
+          <span class="rtf-notes"><%= rich_text_instructions %></span>
+        </p>
       <% else %>
         <dl>
           <dt class="landmark"><%= t(".landmark.note") %>:</dt>
