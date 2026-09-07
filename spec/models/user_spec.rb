@@ -29,11 +29,10 @@ describe User do
       end
     end
 
-    context "with a username confusable to a forbidden one" do
-      let(:forbidden_username) { "admin" }
+    context "with a username confusable with a forbidden one" do
 
       before do
-        allow(ArchiveConfig).to receive(:FORBIDDEN_USERNAMES).and_return([forbidden_username])
+        allow(ArchiveConfig).to receive(:FORBIDDEN_USERNAMES).and_return(["admin"])
       end
 
       it { is_expected.not_to allow_values("admin", "admın", "ad.min", "ad min ", "adrnin", "ADMIN", "ᗅdmin").for(:login) }
@@ -43,7 +42,7 @@ describe User do
       let(:forbidden_username) { "admin" }
 
       before do
-        allow(ArchiveConfig).to receive(:FORBIDDEN_USERNAMES).and_return([forbidden_username])
+        allow(ArchiveConfig).to receive(:FORBIDDEN_USERNAMES).and_return(["admin"])
       end
 
       it { is_expected.to allow_values("user", "admn", "SadminER").for(:login) }

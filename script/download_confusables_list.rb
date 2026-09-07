@@ -11,6 +11,7 @@ require "net/http"
 
 # The directory which the confusables are stored in the otwarchive repository.
 CONFUSABLES_DIRECTORY = Rails.root.join("config/confusables.txt")
+CONFUSABLES_URL = "https://unicode.org/Public/security/latest/confusables.txt"
 
 # Uses regex to find the line that starts with "# Version:" and returns what
 # comes after as string. Takes a string object as an argument.
@@ -22,11 +23,11 @@ def fetch_version(text)
   end
 end
 
-response = Net::HTTP.get_response(URI.parse("https://unicode.org/Public/security/latest/confusables.txt"))
+response = Net::HTTP.get_response(URI.parse(CONFUSABLES_URL))
 
 if response.nil? || !response.is_a?(Net::HTTPSuccess)
   puts "Could not get confusables.txt. Try visiting"
-  puts "https://unicode.org/Public/security/latest/confusables.txt to find"
+  puts "#{CONFUSABLES_URL} to find"
   puts "the error."
   return
 end
