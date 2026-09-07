@@ -30,7 +30,6 @@ describe User do
     end
 
     context "with a username confusable with a forbidden one" do
-
       before do
         allow(ArchiveConfig).to receive(:FORBIDDEN_USERNAMES).and_return(["admin"])
       end
