@@ -1,6 +1,4 @@
 module Confusable
-  extend ActiveSupport::Concern
-
   # This is stricter than the confusable Unicode defines, it's case-insensitive
   # and also includes dialectics, blank and punctuations.
   def self.confusable?(string1, string2)

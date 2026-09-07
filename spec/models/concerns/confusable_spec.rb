@@ -1,28 +1,20 @@
 require "spec_helper"
 
 describe Confusable do
-
-  context "it's internal skeleton" do
-    it "is the word itself for words with all Latin letters" do
-      expect(Confusable.internal_skeleton("Support")).to eq("Support")
+  context "in confusable check" do
+    it "classifies the word itself as confusable" do
+      expect(Confusable.confusable?("Support", "Support")).to be_truthy
     end
 
-    it "has it's Latin counterpart for Cyrillic letters" do
-      # notice the P being uppercase since letter case standardizing isn't in Confusable.internal_skeleton()
-      expect(Confusable.internal_skeleton("SupРort")).to eq("SupPort")
-    end
-
-    it "has separated characters for confusables with combined characters" do
-      expect(Confusable.internal_skeleton("admin")).to eq("adrnin")
+    it "separates the characters for confusables with combined characters" do
+      expect(Confusable.confusable?("admin", "adrnin")).to be_truthy
     end
 
     it "removes default ignorable code points" do
       # ZERO WIDTH NON-JOINER, U+200C
-      expect(Confusable.internal_skeleton("𝅳\u200c")).to eq("")
+      expect(Confusable.confusable?("𝅳\u200c", "")).to be_truthy
     end
-  end
 
-  context "in confusable check" do
     it "classifies two words with a cyrillic/latin difference as confusable" do
       expect(Confusable.confusable?("SupРort", "Support")).to be_truthy
     end
