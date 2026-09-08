@@ -37,7 +37,7 @@ describe User do
       it { is_expected.not_to allow_values("admin", "admın", "ad.min", "ad min ", "adrnin", "ADMIN", "ᗅdmin").for(:login) }
     end
 
-    context "with a username not confusable to a forbidden one" do
+    context "with a username not confusable with a forbidden one" do
       let(:forbidden_username) { "admin" }
 
       before do
