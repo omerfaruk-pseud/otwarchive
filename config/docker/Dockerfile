@@ -17,6 +17,16 @@ VOLUME /otwa
 # Install ruby packages
 COPY Gemfile .
 COPY Gemfile.lock .
+
+SHELL ["bash", "-lc"]
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash
+RUN \. "$HOME/.nvm/nvm.sh"
+RUN nvm install 24
+RUN node -v
+RUN corepack enable yarn
+RUN yarn -v
+
 RUN gem install bundler -v 2.6.9 && bundle install
 
 # Default command to run in a new container
