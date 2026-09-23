@@ -11,8 +11,7 @@ Lexxy.configure({
                 "background-color": []
             }
         },
-        headings: [ "h1", "h2", "h3", "h4", "h5" ], // this might not be working
-        markdown: false
+        headings: [ "h1", "h2", "h3", "h4", "h5" ]
     }
 });
 
@@ -25,11 +24,48 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.querySelector(".rtf-html-switch").classList.remove('hidden');
     html_link.classList.add("current");
 
+    function connect() {
+        rte.addEventListener(
+            "lexxy:change",
+            throttledHandleEditorChange
+        );
+    }
+
+    function disconnect() {
+        rte.removeEventListener(
+            "lexxy:change",
+            throttledHandleEditorChange
+        );
+    }
+
+    function throttle(mainFunction, delay) {
+        let timerFlag = null; // Variable to keep track of the timer
+
+        // Returning a throttled version
+        return (...args) => {
+            if (timerFlag === null) { // If there is no timer currently running
+                mainFunction(...args); // Execute the main function
+                timerFlag = setTimeout(() => { // Set a timer to clear the timerFlag after the specified delay
+                    timerFlag = null; // Clear the timerFlag to allow the main function to be executed again
+                }, delay);
+            }
+        };
+    }
+
+
+    function handleEditorChange() {
+        localStorage.setItem(rte.getAttribute("id"), rte.value);
+    }
+
+    const throttledHandleEditorChange = throttle(handleEditorChange, 300);
+
+
     function switchToRTE() {
         rtf_link.classList.add("current");
         html_link.classList.remove("current");
 
         rte.value = html_editor.value;
+        connect();
 
         html_editor.classList.add("hidden");
         rte.classList.remove("hidden");
@@ -42,6 +78,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         if(rte.value != "<p><br></p>") {
             html_editor.value = rte.value;
         }
+        disconnect();
 
         html_editor.classList.remove("hidden");
         rte.classList.add("hidden");
@@ -65,6 +102,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     rte.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem)); // for IE compatibility
 
                     switchToRTE();
+                }
+
+                if(localStorage.getItem(rte.getAttribute("id"))) {
+                    rte.value = localStorage.getItem(rte.getAttribute("id"));
                 }
             });
         }
