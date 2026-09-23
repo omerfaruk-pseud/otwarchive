@@ -6,11 +6,7 @@ import * as Lexxy from "lexxy";
 Lexxy.configure({
     default: {
         highlight: {
-            buttons: {
-                color: [],
-                "background-color": []
-            }, // this might not be necessary if we remove the button altogether
-            permit: {
+            permit: { // I don't know if this works either
                 color: [],
                 "background-color": []
             }
@@ -27,37 +23,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     document.querySelector(".rtf-html-switch").classList.remove('hidden');
     html_link.classList.add("current");
-    rtf_link.onclick = function () {
+
+    function switchToRTE() {
         rtf_link.classList.add("current");
         html_link.classList.remove("current");
 
-        if (!document.querySelector("lexxy-editor")) {
-            let node = document.createRange().createContextualFragment('<lexxy-editor id="comment_content_for_173" class="comment_form observe_textlength" title="Enter Comment" input="comment_content_for_173_trix_input_comment" name="comment[comment_content]"></lexxy-editor>');
-            document.getElementById("lexxy_parent").appendChild(node);
-            document.addEventListener("lexxy:initialize", function () {
-                document.querySelector(".lexxy-editor__content").classList.add("userstuff");
-                rte = document.querySelector("lexxy-editor");
-                rte.value = html_editor.value;
-
-                let selectors = "button[name=\"highlight\"], " +
-                    "button[name=\"file\"], " +
-                    "button[name=\"image\"], " +
-                    "button[name=\"code\"]";
-                if(rte.querySelectorAll(selectors).length > 0) {
-                    rte.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem)); // for IE compatibility
-                }
-                html_editor.classList.add("hidden");
-                rte.classList.remove("hidden");
-            });
-        } else {
         rte.value = html_editor.value;
 
         html_editor.classList.add("hidden");
         rte.classList.remove("hidden");
-        }
-    };
+    }
 
-    html_link.onclick = function () {
+    function switchToHTML() {
         html_link.classList.add("current");
         rtf_link.classList.remove("current");
 
@@ -67,5 +44,32 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         html_editor.classList.remove("hidden");
         rte.classList.add("hidden");
+    }
+
+    rtf_link.onclick = function () {
+        if (document.querySelector("lexxy-editor")) {
+            switchToRTE();
+        } else {
+            let node = document.createRange().createContextualFragment('<lexxy-editor id="comment_content_for_173" class="comment_form observe_textlength" title="Enter Comment" input="comment_content_for_173_trix_input_comment" name="comment[comment_content]"></lexxy-editor>');
+            document.getElementById("lexxy_parent").appendChild(node);
+            document.addEventListener("lexxy:initialize", function () {
+                document.querySelector(".lexxy-editor__content").classList.add("userstuff");
+                rte = document.querySelector("lexxy-editor");
+
+                let selectors = "button[name=\"highlight\"], " +
+                    "button[name=\"file\"], " +
+                    "button[name=\"image\"], " +
+                    "button[name=\"code\"]";
+                if(rte.querySelectorAll(selectors).length > 0) {
+                    rte.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem)); // for IE compatibility
+
+                    switchToRTE();
+                }
+            });
+        }
+    };
+
+    html_link.onclick = function () {
+        switchToHTML();
     };
 });
