@@ -189,6 +189,18 @@ module ApplicationHelper
       %w(new create edit update).include?(controller.action_name)
   end
 
+  def use_lexxy
+    # TODO do we need to reset @content_for here?
+    content_for(:lexxy) { javascript_importmap_tags }
+    content_for :lexxy do
+      stylesheet_link_tag "lexxy"
+    end
+  end
+
+  def allow_lexxy?(controller)
+    true
+  end
+
   # see: http://www.w3.org/TR/wai-aria/states_and_properties#aria-valuenow
   def generate_countdown_html(field_id, max)
     max = max.to_s

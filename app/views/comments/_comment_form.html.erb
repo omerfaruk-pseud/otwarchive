@@ -1,6 +1,4 @@
 <!-- expects the local variables comment, commentable, and button_name -->
-<%= stylesheet_link_tag "lexxy" %>
-
 <% if !commentable && @commentable %>
   <% commentable = @commentable %>
 <% end %>
@@ -73,8 +71,15 @@
           <% comment.set_parent_and_unreviewed %>
           <% comment.pseud = current_user.default_pseud %>
         <% end %>
-        <p class="footnote"><%= allowed_html_instructions(strip_images: comment.use_image_safety_mode?) %></p>
-      <% else %>
+        <ul class="hidden rtf-html-switch actions" role="menu">
+          <li><a class="rtf-link" href="#"><%= ts("Rich Text") %></a></li>
+          <li><a class="html-link" href="#"><%= ts("HTML") %></a></li>
+        </ul>
+        <p class="rtf-html-instructions note">
+          <span class="html-notes"><%= allowed_html_instructions %></span>
+          <span class="hidden rtf-notes"><%= rich_text_instructions %></span>
+        </p>
+    <% else %>
         <dl>
           <dt class="landmark"><%= t(".landmark.note") %>:</dt>
           <dd class="instructions comment_form"><%= t(".guest_instructions") %></dd>
@@ -92,14 +97,15 @@
         <p class="footnote"><%= allowed_html_instructions(strip_images: true) %></p>
       <% end %>
 
-      <p>
+      <p id="lexxy_parent">
         <% content_id = "comment_content_for_#{commentable.id}" %>
         <label for="<%= content_id %>" class="landmark"><%= t(".landmark.comment") %></label>
-        <%= f.rich_text_area :comment_content, id: content_id, class: "comment_form observe_textlength", title: t(".comment_field_title") %>
+        <% use_lexxy %>
+        <%= f.text_area :comment_content, id: content_id, class: "comment_form observe_textlength", title: t(".comment_field_title") %>
         <input type="hidden" id="controller_name_for_<%= commentable.id %>" name="controller_name" value="<%= @controller_name ||= controller.controller_name %>" />
       </p>
       <%= generate_countdown_html("comment_content_for_#{commentable.id}", ArchiveConfig.COMMENT_MAX) %>
-      <%= live_validation_for_field "comment_content_for_#{commentable.id}",
+      <%#= live_validation_for_field "comment_content_for_#{commentable.id}",
             failureMessage: t(".comment_too_short"),
             maximum_length: ArchiveConfig.COMMENT_MAX,
             tooLongMessage: t(".comment_too_long", count: ArchiveConfig.COMMENT_MAX) %>
