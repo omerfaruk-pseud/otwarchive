@@ -15,6 +15,7 @@ Lexxy.configure({
                 "background-color": []
             }
         },
+        headings: [ "h1", "h2", "h3", "h4", "h5" ], // this might not be working
         markdown: false
     }
 });
