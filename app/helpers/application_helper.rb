@@ -78,11 +78,11 @@ module ApplicationHelper
   def allowed_html_instructions(page: "other", strip_images: false)
     help_path = case page
                 when "work"
-      help_work_html_path
+                  help_works_html_path
                 when "comment"
-      help_comment_html_path
+                  help_comments_html_path
                 else
-      help_other_html_path
+                  help_others_html_path
                 end
     # i18n-tasks-use t("application_helper.text_limited_html")
     # i18n-tasks-use t("application_helper.text_limited_html_strip_images_html")
@@ -93,11 +93,11 @@ module ApplicationHelper
   def rich_text_instructions(page: "other")
     help_path = case page
                 when "work"
-                  help_work_rte_path
+                  help_works_rte_path
                 when "comment"
-                  help_comment_rte_path
+                  help_comments_rte_path
                 else
-                  help_other_rte_path
+                  help_others_rte_path
                 end
     t("application_helper.rich_text_instructions.type_paste_rich_text_html", help_link: link_to_help_modal(help_path, t("application_helper.rich_text_instructions.rte_help_title")))
   end
