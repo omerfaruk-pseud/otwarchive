@@ -75,15 +75,31 @@ module ApplicationHelper
     link_to content_tag(:span, ts("RSS Feed")), link_to_feed, title: ts("RSS Feed"), class: "rss"
   end
 
-  def allowed_html_instructions(strip_images: false)
+  def allowed_html_instructions(page: "other", strip_images: false)
+    help_path = case page
+                when "work"
+      help_work_html_path
+                when "comment"
+      help_comment_html_path
+                else
+      help_other_html_path
+                end
     # i18n-tasks-use t("application_helper.text_limited_html")
     # i18n-tasks-use t("application_helper.text_limited_html_strip_images_html")
-    t(strip_images ? "application_helper.text_limited_html_strip_images_html" : "application_helper.text_limited_html", help_link: link_to_help_modal(help_html_path, t("application_helper.allowed_html_instructions.html_help_title")))
+    t(strip_images ? "application_helper.text_limited_html_strip_images_html" : "application_helper.text_limited_html", help_link: link_to_help_modal(help_path, t("application_helper.allowed_html_instructions.html_help_title")))
   end
 
   # Returns instructions and help button that is shown above the RTE window
-  def rich_text_instructions
-    t("application_helper.rich_text_instructions.type_paste_rich_text_html", help_link: link_to_help_modal(help_rte_path, t("application_helper.rich_text_instructions.rte_help_title")))
+  def rich_text_instructions(page: "other")
+    help_path = case page
+                when "work"
+                  help_work_rte_path
+                when "comment"
+                  help_comment_rte_path
+                else
+                  help_other_rte_path
+                end
+    t("application_helper.rich_text_instructions.type_paste_rich_text_html", help_link: link_to_help_modal(help_path, t("application_helper.rich_text_instructions.rte_help_title")))
   end
 
   def link_to_modal(content = "", options = {})
@@ -155,15 +171,15 @@ module ApplicationHelper
     unless column.nil?
       current_column = (params[:sort_column] == column.to_s) || params[:sort_column].blank? && options[:sort_default]
       css_class = current_column ? "current" : nil
-      if current_column # explicitly or implicitly doing the existing sorting, so we need to toggle
+      direction = if current_column # explicitly or implicitly doing the existing sorting, so we need to toggle
         if params[:sort_direction]
-          direction = params[:sort_direction].to_s.upcase == 'ASC' ? 'DESC' : 'ASC'
+          params[:sort_direction].to_s.upcase == 'ASC' ? 'DESC' : 'ASC'
         else
-          direction = options[:desc_default] ? 'ASC' : 'DESC'
+          options[:desc_default] ? 'ASC' : 'DESC'
         end
-      else
-        direction = options[:desc_default] ? 'DESC' : 'ASC'
-      end
+                  else
+        options[:desc_default] ? 'DESC' : 'ASC'
+                  end
       link_to_unless condition, ((direction == 'ASC' ? '&#8593;&#160;' : '&#8595;&#160;') + title).html_safe,
           current_path_with(sort_column: column, sort_direction: direction), {class: css_class, title: (direction == 'ASC' ? ts('sort up') : ts('sort down'))}
     else
@@ -391,22 +407,22 @@ module ApplicationHelper
     checkboxes_id = "#{base_id}_checkboxes"
     opts = options[:disabled] ? {disabled: "true"} : {}
     already_checked = case
-      when options[:checked_method].is_a?(Array)
+                      when options[:checked_method].is_a?(Array)
         options[:checked_method]
-      when options[:checked_method].nil?
+                      when options[:checked_method].nil?
         []
-      else
+                      else
         form.object.send(options[:checked_method]) || []
-      end
+                      end
 
     checkboxes = choices.map do |choice|
       is_checked = !options[:checked_method] || already_checked.empty? ? false : already_checked.include?(choice)
       display_name = case
-        when options[:name_helper_method]
+                     when options[:name_helper_method]
           eval("#{options[:name_helper_method]}(choice)")
-        else
+                     else
           choice.send(options[:name_method]).html_safe
-        end
+                     end
       value = choice.send(options[:value_method])
       checkbox_id = "#{base_id}_#{name_to_id(value)}"
       checkbox = check_box_tag(field_name, value, is_checked, opts.merge({id: checkbox_id}))

@@ -1,8 +1,9 @@
 class HelpController < ApplicationController
   HELP_ACTIONS = %i[
     collectibles_add_to_collection
+    comments_html
+    comments_rte
     first_login
-    html
     preferences_collection
     preferences_comment
     preferences_display
@@ -13,7 +14,8 @@ class HelpController < ApplicationController
     privacy_moderated_commenting
     privacy_restricted_commenting
     privacy_restricted_work
-    rte
+    others_html
+    others_rte
     skins_basics
     skins_creating
     skins_parents
@@ -27,13 +29,15 @@ class HelpController < ApplicationController
     tags_warnings
     works_assignment
     works_backdating
+    works_html
     works_languages
     works_parents
     works_recipients
+    works_rte
     works_series
     works_skins
     works_translation_link
-  ].freeze
+  ].freeze # TODO: also sort locales by alphabetical order
 
   before_action :users_only, only: [:first_login]
   layout proc { |controller| controller.request.xhr? ? false : "application" } # rubocop:disable Lint/AmbiguousBlockAssociation

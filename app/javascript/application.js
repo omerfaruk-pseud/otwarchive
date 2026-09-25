@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let html_editor = document.querySelector("textarea[id=comment_content_for_173]");
     let html_link = document.querySelector(".html-link");
     let rtf_link = document.querySelector(".rtf-link");
+    let html_notes = document.querySelector(".html-notes");
+    let rtf_notes = document.querySelector(".rtf-notes");
 
     document.querySelector(".rtf-html-switch").classList.remove('hidden');
     html_link.classList.add("current");
@@ -69,6 +71,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         html_editor.classList.add("hidden");
         rte.classList.remove("hidden");
+
+        html_notes.classList.add("hidden");
+        rtf_notes.classList.remove("hidden");
     }
 
     function switchToHTML() {
@@ -82,6 +87,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         html_editor.classList.remove("hidden");
         rte.classList.add("hidden");
+
+        html_notes.classList.remove("hidden");
+        rtf_notes.classList.add("hidden");
     }
 
     rtf_link.onclick = function () {
