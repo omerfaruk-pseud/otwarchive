@@ -76,8 +76,8 @@
           <li><a class="html-link" href="#"><%= ts("HTML") %></a></li>
         </ul>
         <p class="rtf-html-instructions note">
-          <span class="html-notes"><%= allowed_html_instructions %></span>
-          <span class="hidden rtf-notes"><%= rich_text_instructions %></span>
+          <span class="html-notes"><%= allowed_html_instructions(page: "comment") %></span>
+          <span class="hidden rtf-notes"><%= rich_text_instructions(page: "comment") %></span>
         </p>
     <% else %>
         <dl>
@@ -94,7 +94,14 @@
             <%= live_validation_for_field("comment_email_for_#{commentable.id}", failureMessage: t(".guest_email_failure")) %>
           </dd>
         </dl>
-        <p class="footnote"><%= allowed_html_instructions(strip_images: true) %></p>
+        <ul class="hidden rtf-html-switch actions" role="menu">
+          <li><a class="rtf-link" href="#"><%= ts("Rich Text") %></a></li> <!-- TODO i18n -->
+          <li><a class="html-link" href="#"><%= ts("HTML") %></a></li>
+        </ul>
+        <p class="rtf-html-instructions note">  <!-- TODO note or footnote as class? -->
+          <span class="html-notes"><%= allowed_html_instructions(page: "comment", strip_images: true) %></span>
+          <span class="hidden rtf-notes"><%= rich_text_instructions(page: "comment") %></span>
+        </p>
       <% end %>
 
       <p id="lexxy_parent">

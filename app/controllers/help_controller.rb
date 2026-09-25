@@ -1,8 +1,9 @@
 class HelpController < ApplicationController
   HELP_ACTIONS = %i[
     collectibles_add_to_collection
+    comment_html
+    comment_rte
     first_login
-    html
     preferences_collection
     preferences_comment
     preferences_display
@@ -13,7 +14,8 @@ class HelpController < ApplicationController
     privacy_moderated_commenting
     privacy_restricted_commenting
     privacy_restricted_work
-    rte
+    other_html
+    other_rte
     skins_basics
     skins_creating
     skins_parents
@@ -25,6 +27,8 @@ class HelpController < ApplicationController
     tags_ratings
     tags_relationships
     tags_warnings
+    work_html
+    work_rte
     works_assignment
     works_backdating
     works_languages
