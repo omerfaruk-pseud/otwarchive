@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/omerfaruk-pseud/lexxy
-  revision: 527c7427ff328ec41eb1423187bc74011d992bfc
+  revision: a407f603fbd9c62616fcf00a65adefef97555a51
   specs:
     lexxy (0.9.33)
       railties (>= 8.0.2)
