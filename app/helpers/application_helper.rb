@@ -213,10 +213,6 @@ module ApplicationHelper
     end
   end
 
-  def allow_lexxy?(controller)
-    true
-  end
-
   # see: http://www.w3.org/TR/wai-aria/states_and_properties#aria-valuenow
   def generate_countdown_html(field_id, max)
     max = max.to_s
