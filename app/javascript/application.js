@@ -64,38 +64,47 @@ class EditingField {
 
         this.rtf_link.onclick = (e) => {
             e.preventDefault();
-            if (this.comment_field.querySelector("lexxy-editor")) {
-                this.switchToRTE();
-            } else {
-                let node = document.createRange().createContextualFragment("<lexxy-editor ></lexxy-editor>");
-                this.comment_field.querySelector("#lexxy_parent").appendChild(node);
-                this.comment_field.addEventListener("lexxy:initialize", () => {
-                    this.comment_field.querySelector(".lexxy-editor__content").classList.add("userstuff");
-                    this.rte = this.comment_field.querySelector("lexxy-editor");
-
-                    let attributes = this.comment_field.querySelector("#lexxy_attributes");
-                    this.rte.setAttribute("class", attributes.dataset.class);
-                    this.rte.setAttribute("title", attributes.dataset.title);
-                    this.rte.setAttribute("name", attributes.dataset.name);
-                    this.rte.setAttribute("id", attributes.dataset.id); // TODO: does this break validation and/or is the id it replaces used
-
-                    let selectors = "button[name=\"highlight\"], " +
-                        "button[name=\"file\"], " +
-                        "button[name=\"image\"], " +
-                        "button[name=\"code\"]";
-                    if(this.rte.querySelectorAll(selectors).length > 0) {
-                        this.rte.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem)); // for IE compatibility
-
-                        this.switchToRTE();
-                    }
-                });
+            if(!this.rtf_link.classList.contains("current")) {
+                if (this.comment_field.querySelector("lexxy-editor")) {
+                    this.switchToRTE();
+                } else {
+                    this.initialize_lexxy();
+                }
             }
         };
 
         this.html_link.onclick = (e) => {
             e.preventDefault();
-            this.switchToHTML();
+            if(!this.html_link.classList.contains("current")) {
+                this.switchToHTML();
+            }
         };
+    }
+
+    initialize_lexxy() {
+        let node = document.createRange().createContextualFragment("<lexxy-editor ></lexxy-editor>");
+        this.comment_field.querySelector("#lexxy_parent").appendChild(node);
+
+        this.comment_field.addEventListener("lexxy:initialize", () => {
+            this.comment_field.querySelector(".lexxy-editor__content").classList.add("userstuff");
+            this.rte = this.comment_field.querySelector("lexxy-editor");
+
+            let attributes = this.comment_field.querySelector("#lexxy_attributes");
+            this.rte.setAttribute("class", attributes.dataset.class);
+            this.rte.setAttribute("title", attributes.dataset.title);
+            this.rte.setAttribute("name", attributes.dataset.name);
+            this.rte.setAttribute("id", attributes.dataset.id); // TODO: does this break validation and/or is the id it replaces used
+
+            let selectors = "button[name=\"highlight\"], " +
+                "button[name=\"file\"], " +
+                "button[name=\"image\"], " +
+                "button[name=\"code\"]";
+            if(this.rte.querySelectorAll(selectors).length > 0) {
+                this.rte.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem)); // for IE compatibility
+
+                this.switchToRTE();
+            }
+        });
     }
 }
 
