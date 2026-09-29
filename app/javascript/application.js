@@ -33,14 +33,14 @@ class EditingField {
     connect() {
         this.rte.addEventListener(
             "lexxy:change",
-            this.throttle(this.handleEditorChange, 300)
+            this.throttle(this.handleEditorChange.bind(this), 300).bind(this)
         );
     }
 
     disconnect() {
         this.rte.removeEventListener(
             "lexxy:change",
-            this.throttle(this.handleEditorChange, 300)
+            this.throttle(this.handleEditorChange.bind(this), 300).bind(this)
         );
     }
 
@@ -58,12 +58,10 @@ class EditingField {
         };
     }
 
-
     handleEditorChange() {
         localStorage.setItem(this.rte.getAttribute("id"), this.rte.value);
+        console.log(localStorage.getItem(this.rte.getAttribute("id")));
     }
-
-
 
 
     switchToRTE() {
