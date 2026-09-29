@@ -3,6 +3,7 @@ class HelpController < ApplicationController
     collectibles_add_to_collection
     comments_html
     comments_rte
+    csv_download
     first_login
     preferences_collection
     preferences_comment
