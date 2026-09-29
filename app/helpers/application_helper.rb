@@ -209,7 +209,7 @@ module ApplicationHelper
     # TODO do we need to reset @content_for here?
     content_for(:lexxy) { javascript_importmap_tags }
     content_for :lexxy do
-      stylesheet_link_tag "lexxy"
+      stylesheet_link_tag "/stylesheets/lexxy"
     end
   end
 
