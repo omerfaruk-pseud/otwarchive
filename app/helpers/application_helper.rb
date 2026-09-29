@@ -171,15 +171,15 @@ module ApplicationHelper
     unless column.nil?
       current_column = (params[:sort_column] == column.to_s) || params[:sort_column].blank? && options[:sort_default]
       css_class = current_column ? "current" : nil
-      direction = if current_column # explicitly or implicitly doing the existing sorting, so we need to toggle
+      if current_column # explicitly or implicitly doing the existing sorting, so we need to toggle
         if params[:sort_direction]
-          params[:sort_direction].to_s.upcase == 'ASC' ? 'DESC' : 'ASC'
+          direction = params[:sort_direction].to_s.upcase == 'ASC' ? 'DESC' : 'ASC'
         else
-          options[:desc_default] ? 'ASC' : 'DESC'
+          direction = options[:desc_default] ? 'ASC' : 'DESC'
         end
-                  else
-        options[:desc_default] ? 'DESC' : 'ASC'
-                  end
+      else
+        direction = options[:desc_default] ? 'DESC' : 'ASC'
+      end
       link_to_unless condition, ((direction == 'ASC' ? '&#8593;&#160;' : '&#8595;&#160;') + title).html_safe,
           current_path_with(sort_column: column, sort_direction: direction), {class: css_class, title: (direction == 'ASC' ? ts('sort up') : ts('sort down'))}
     else
@@ -407,22 +407,22 @@ module ApplicationHelper
     checkboxes_id = "#{base_id}_checkboxes"
     opts = options[:disabled] ? {disabled: "true"} : {}
     already_checked = case
-                      when options[:checked_method].is_a?(Array)
+      when options[:checked_method].is_a?(Array)
         options[:checked_method]
-                      when options[:checked_method].nil?
+      when options[:checked_method].nil?
         []
-                      else
+      else
         form.object.send(options[:checked_method]) || []
-                      end
+      end
 
     checkboxes = choices.map do |choice|
       is_checked = !options[:checked_method] || already_checked.empty? ? false : already_checked.include?(choice)
       display_name = case
-                     when options[:name_helper_method]
+        when options[:name_helper_method]
           eval("#{options[:name_helper_method]}(choice)")
-                     else
+        else
           choice.send(options[:name_method]).html_safe
-                     end
+        end
       value = choice.send(options[:value_method])
       checkbox_id = "#{base_id}_#{name_to_id(value)}"
       checkbox = check_box_tag(field_name, value, is_checked, opts.merge({id: checkbox_id}))
