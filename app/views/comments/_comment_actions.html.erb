@@ -69,6 +69,7 @@
             commentable: comment,
             button_name: t(".comment") %>
   <% else %>
+    <% use_lexxy %>
     <div id="add_comment_reply_placeholder_<%= comment.id %>" style="display: none;">
   <% end %>
     </div>
