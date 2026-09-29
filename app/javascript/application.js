@@ -47,8 +47,8 @@ class EditingField {
         this.html_link.classList.add("current");
         this.rtf_link.classList.remove("current");
 
-        if(this.rte.value != "<p><br></p>") {
-            this.html_editor.value = rte.value;
+        if(!this.rte.classList.contains("lexxy-editor--empty")) {
+            this.html_editor.value = this.rte.value;
         }
 
         this.html_editor.classList.remove("hidden");
@@ -62,15 +62,22 @@ class EditingField {
         this.comment_field.querySelector(".rtf-html-switch").classList.remove('hidden');
         this.html_link.classList.add("current");
 
-        this.rtf_link.onclick = () => {
+        this.rtf_link.onclick = (e) => {
+            e.preventDefault();
             if (this.comment_field.querySelector("lexxy-editor")) {
                 this.switchToRTE();
             } else {
-                let node = document.createRange().createContextualFragment('<lexxy-editor id="comment_content_for_173" class="comment_form observe_textlength" title="Enter Comment" input="comment_content_for_173_trix_input_comment" name="comment[comment_content]"></lexxy-editor>');
+                let node = document.createRange().createContextualFragment("<lexxy-editor ></lexxy-editor>");
                 this.comment_field.querySelector("#lexxy_parent").appendChild(node);
                 this.comment_field.addEventListener("lexxy:initialize", () => {
                     this.comment_field.querySelector(".lexxy-editor__content").classList.add("userstuff");
                     this.rte = this.comment_field.querySelector("lexxy-editor");
+
+                    let attributes = this.comment_field.querySelector("#lexxy_attributes");
+                    this.rte.setAttribute("class", attributes.dataset.class);
+                    this.rte.setAttribute("title", attributes.dataset.title);
+                    this.rte.setAttribute("name", attributes.dataset.name);
+                    this.rte.setAttribute("id", attributes.dataset.id); // TODO: does this break validation and/or is the id it replaces used
 
                     let selectors = "button[name=\"highlight\"], " +
                         "button[name=\"file\"], " +
@@ -85,14 +92,18 @@ class EditingField {
             }
         };
 
-        this.html_link.onclick = () => {
+        this.html_link.onclick = (e) => {
+            e.preventDefault();
             this.switchToHTML();
         };
     }
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    new EditingField(document.querySelector("div.post.comment"));
+    let main_comment = document.querySelector("div.post.comment");
+    if(main_comment !== null) {
+        new EditingField(main_comment);
+    }
 
     // Options for the observer (which mutations to observe)
     const config = { attributes: true, childList: true, subtree: true };
@@ -101,7 +112,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const callback = (mutationList, observer) => {
         for (const mutation of mutationList) {
             for (const addedNode of mutation.addedNodes) {
-                if (addedNode.classList != null && addedNode.classList.contains("post")) {
+                if (addedNode.classList != null && addedNode.matches("div.post.comment")) {
                     new EditingField(addedNode);
                 }
             }
