@@ -205,9 +205,9 @@ module ApplicationHelper
       %w(new create edit update).include?(controller.action_name)
   end
 
+  # load JavaScript and CSS of Lexxy, this will use importmaps to also import node modules of Lexical and other necessary libraries  
   def use_lexxy
-    # TODO do we need to reset @content_for here?
-    content_for(:lexxy) { javascript_importmap_tags }
+    content_for(:lexxy, flush: true) { javascript_importmap_tags }
     content_for :lexxy do
       stylesheet_link_tag "lexxy"
     end
