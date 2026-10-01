@@ -28,7 +28,7 @@ class EditingField {
         this.html_notes = comment_field.querySelector(".html-notes");
         this.rtf_notes = comment_field.querySelector(".rtf-notes");
 
-        this.get_ready();
+        this.getReady();
     }
 
     switchToRTE() {
@@ -48,9 +48,7 @@ class EditingField {
         this.html_link.classList.add("current");
         this.rtf_link.classList.remove("current");
 
-        if(!this.rte.classList.contains("lexxy-editor--empty")) {
-            this.html_editor.value = this.rte.value;
-        }
+        this.copyContentToHTML();
 
         this.html_editor.classList.remove("hidden");
         this.rte.classList.add("hidden");
@@ -59,9 +57,19 @@ class EditingField {
         this.rtf_notes.classList.add("hidden");
     }
 
-    get_ready() {
+    copyContentToHTML() {
+        if(!this.rte.classList.contains("lexxy-editor--empty")) {
+            this.html_editor.value = this.rte.value;
+        }
+    }
+
+    getReady() {
         this.comment_field.querySelector(".rtf-html-switch").classList.remove('hidden');
         this.html_link.classList.add("current");
+
+        this.comment_field.querySelector("input[type=submit]").onclick = () => {
+            this.copyContentToHTML();
+        };
 
         this.rtf_link.onclick = (e) => {
             e.preventDefault();
@@ -69,7 +77,7 @@ class EditingField {
                 if (this.comment_field.querySelector("lexxy-editor")) {
                     this.switchToRTE();
                 } else {
-                    this.initialize_lexxy();
+                    this.initializeLexxy();
                 }
             }
         };
@@ -82,7 +90,7 @@ class EditingField {
         };
     }
 
-    initialize_lexxy() {
+    initializeLexxy() {
         let node = document.createRange().createContextualFragment("<lexxy-editor ></lexxy-editor>");
         this.comment_field.querySelector("#lexxy_parent").appendChild(node);
 
