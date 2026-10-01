@@ -97,7 +97,8 @@ class EditingField {
             this.rte.setAttribute("id", attributes.dataset.id); // TODO: does this break validation and/or is the id it replaces used
 
             let selectors = "button[name=\"highlight\"], " +
-                "button[name=\"code\"]";
+                "button[name=\"code\"], " +
+                "lexxy-code-language-picker";
             if(this.rte.querySelectorAll(selectors).length > 0) {
                 this.rte.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem)); // for IE compatibility
 
