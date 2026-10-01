@@ -38,7 +38,7 @@ class HelpController < ApplicationController
     works_series
     works_skins
     works_translation_link
-  ].freeze # TODO: also sort locales by alphabetical order
+  ].freeze
 
   before_action :users_only, only: [:first_login]
   layout proc { |controller| controller.request.xhr? ? false : "application" } # rubocop:disable Lint/AmbiguousBlockAssociation
