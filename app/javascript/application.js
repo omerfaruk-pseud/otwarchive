@@ -13,7 +13,8 @@ Lexxy.configure({
                 "background-color": []
             }
         },
-        markdown: false
+        markdown: false,
+        attachments: false
     }
 });
 
@@ -96,8 +97,6 @@ class EditingField {
             this.rte.setAttribute("id", attributes.dataset.id); // TODO: does this break validation and/or is the id it replaces used
 
             let selectors = "button[name=\"highlight\"], " +
-                "button[name=\"file\"], " +
-                "button[name=\"image\"], " +
                 "button[name=\"code\"]";
             if(this.rte.querySelectorAll(selectors).length > 0) {
                 this.rte.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem)); // for IE compatibility
