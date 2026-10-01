@@ -1,8 +1,6 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 /*jshint esversion: 6 */
 
-import "lexxy";
-
 import * as Lexxy from "lexxy";
 
 Lexxy.configure({
@@ -123,7 +121,7 @@ class EditingField {
     }
 }
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
     let main_comment = document.querySelector("div.post.comment");
     if(main_comment !== null) {
         new EditingField(main_comment);
@@ -133,7 +131,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const config = { attributes: true, childList: true, subtree: true };
 
     // Callback function to execute when mutations are observed
-    const callback = (mutationList, observer) => {
+    const callback = (mutationList) => {
         for (const mutation of mutationList) {
             for (const addedNode of mutation.addedNodes) {
                 if (addedNode.classList != null && addedNode.matches("div.post.comment")) {
