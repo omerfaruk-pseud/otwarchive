@@ -76,7 +76,7 @@
           <li><a class="html-link" href="#"><%= ts("HTML") %></a></li>
         </ul>
         <p class="rtf-html-instructions note">
-          <span class="html-notes"><%= allowed_html_instructions(page: "comment") %></span>
+          <span class="html-notes"><%= allowed_html_instructions(page: "comment", strip_images: comment.use_image_safety_mode?) %></span>
           <span class="hidden rtf-notes"><%= rich_text_instructions(page: "comment") %></span>
         </p>
     <% else %>
