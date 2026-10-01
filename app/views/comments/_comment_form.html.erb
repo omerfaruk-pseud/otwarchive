@@ -113,7 +113,7 @@
         <input type="hidden" id="controller_name_for_<%= commentable.id %>" name="controller_name" value="<%= @controller_name ||= controller.controller_name %>" />
       </p>
       <%= generate_countdown_html("comment_content_for_#{commentable.id}", ArchiveConfig.COMMENT_MAX) %>
-      <%#= live_validation_for_field "comment_content_for_#{commentable.id}",
+      <%= live_validation_for_field "comment_content_for_#{commentable.id}",
             failureMessage: t(".comment_too_short"),
             maximum_length: ArchiveConfig.COMMENT_MAX,
             tooLongMessage: t(".comment_too_long", count: ArchiveConfig.COMMENT_MAX) %>
