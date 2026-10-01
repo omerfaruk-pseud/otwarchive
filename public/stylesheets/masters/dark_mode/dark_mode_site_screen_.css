@@ -815,7 +815,8 @@ span.question {
   color: #73c4c4;
 }
 
-lexxy-toolbar * {
+lexxy-toolbar *,
+lexxy-table-tools * {
   box-shadow: none;
 }
 
