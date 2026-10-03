@@ -100,6 +100,7 @@ class EditingField {
             this.rte.setAttribute("class", attributes.dataset.class);
             this.rte.setAttribute("title", attributes.dataset.title);
             this.rte.setAttribute("name", attributes.dataset.name);
+            this.rte.setAttribute("aria-labelledby", attributes.dataset.labelledby);
             this.rte.setAttribute("id", attributes.dataset.id); // TODO: does this break validation and/or is the id it replaces used
 
             let selectors = "button[name=\"highlight\"], " +
