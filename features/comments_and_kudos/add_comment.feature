@@ -464,3 +464,42 @@ Scenario: Guest comments with an email from a banned or suspended user should be
       And the email to "creator" should contain "edited their reply to your comment on"
       And the email to "creator" should contain "Go to the thread starting from this comment"
       And the email to "creator" should be translated
+
+@javascript
+Scenario: Using the Rich Text Editor
+  Given the work "Generic Work"
+  When I am logged in as "commenter"
+    And I view the work "Generic Work"
+  Then I should see "Rich Text"
+  When I follow "Rich Text"
+    And I fill in Lexxy with
+      | [:control, b] |
+      | hello         |
+      | :space        |
+      | world         |
+    And I press "Comment"
+  Then I should see "Comment created!"
+  When I follow "Rich Text"
+    And I fill in Lexxy with
+      | hello |
+    And I press "Comment"
+  Then I should see "Comment created!"
+  But I should not see "Rich Text"
+    And I should see "aaa" within ".odd"
+
+
+
+  Scenario: In an admin post
+    Given the admin post "Five Things"
+      And I go to the admin-posts page
+      And I follow "Five Things"
+      And I view the admin post "Five Things"
+    When I am logged in as "commenter"
+    Then I should see "Rich Text"
+      And I follow "Rich Text"
+      And I fill in Lexxy with
+      And I press "Comment"
+    Then I should see "Comment created!"
+      And I should see "thank you adt" within ".odd"
+
+  Scenario: In a thread
