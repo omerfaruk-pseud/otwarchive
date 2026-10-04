@@ -412,17 +412,14 @@ When "I reply on a new page" do
   visit find(:link, "Reply")["href"]
 end
 
-def parse_arr(val)
-  if (md = /\[(.*)\]/.match(val))
-    [*md[1].split(",").map {|v| parse_arr(v) }]
-  elsif (md = /:(.*)/.match(val))
-    return md[1].to_sym
-  else
-    val.strip
-  end
-end
-
 # Capybara's fill_in method doesn't work with contenteditable div elements
-When "I fill in Lexxy with" do |table|
-  find(".lexxy-editor__content").base.send_keys(*table.raw.map { |n| parse_arr(n[0])})
+When "I fill in Lexxy with {string}" do |keys|
+  parse_arr = lambda { |val| if (md = /\[(.*)\]/.match(val))
+                               [*md[1].split(",").map {|v| parse_arr.call(v) }]
+                             elsif (md = /:(.*)/.match(val))
+                               return md[1].to_sym
+                             else
+                               val.strip
+                             end}
+  find(".lexxy-editor__content").base.send_keys(parse_arr.call(keys))
 end
