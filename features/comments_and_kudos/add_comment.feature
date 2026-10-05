@@ -472,20 +472,18 @@ Scenario: Using the Rich Text Editor
     And I view the work "Generic Work"
   Then I should see "Rich Text"
   When I follow "Rich Text"
-    And I fill in Lexxy with
-      | [:control, b] |
-      | hello         |
-      | :space        |
-      | world         |
+    And I fill in Lexxy with "hello"
+    And I fill in Lexxy with "[:control, b]"
+    And I fill in Lexxy with ":space"
+    And I fill in Lexxy with "world"
     And I press "Comment"
   Then I should see "Comment created!"
+  And I should see the text with tags "<p>hello<strong> world</strong></p>"
   When I follow "Rich Text"
-    And I fill in Lexxy with
-      | hello |
+    And I fill in Lexxy with "cats"
     And I press "Comment"
   Then I should see "Comment created!"
-  But I should not see "Rich Text"
-    And I should see "aaa" within ".odd"
+  And I should see the text with tags "<p>cats</p>"
 
 
 
