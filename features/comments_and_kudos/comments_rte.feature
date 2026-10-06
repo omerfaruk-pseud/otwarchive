@@ -7,21 +7,22 @@ Feature: Rich text editor for Comments
       And I view <commentable> with comments
     Then I should see "Rich Text"
     When I follow "Rich Text"
-      And I fill in Lexxy with "hello"
-      And I fill in Lexxy with "[:control, b]"
-      And I fill in Lexxy with ":space"
-      And I fill in Lexxy with "world"
+      And I send keys "hello" to Lexxy
+      And I send keys "[:control, b]" to Lexxy
+      And I send keys ":space" to Lexxy
+      And I send keys "world" to Lexxy
     And I press "Comment"
       Then I should see "Comment created!"
       And I should see the text with tags "<p>hello<strong> world</strong></p>"
     When I follow "Rich Text"
-      And I fill in Lexxy with "example website"
-      And I fill in Lexxy with "[:control, a]"
-      And I fill in Lexxy with "[:control, k]"
-      And I fill in Lexxy with "https://example.com"
+      And I send keys "example website" to Lexxy
+      And I send keys "[:control, a]" to Lexxy
+      And I send keys "[:control, k]" to Lexxy
+      And I send keys "https://example.com" to '.input[type="url"]'
+      And I press "Link" within "div[data-dropdown-panel]"
       And I press "Comment"
     Then I should see "Comment created!"
-      And I should see the text with tags '<a href="https://example.com">example website</a>'
+      And I should see the text with tags '<p><a href="https://example.com" rel="nofollow">example website</a></p>'
 
     Examples:
       | commentable |
@@ -38,7 +39,7 @@ Feature: Rich text editor for Comments
       And I follow "Reply" within ".odd"
     Then I should see "Rich Text" within ".odd"
     When I follow "Rich Text" within ".odd"
-      And I fill in Lexxy with "Thank you!"
+      And I send keys "Thank you!" to Lexxy
       And I press "Comment" within ".odd"
     Then I should see "Comment created!"
       And I should see "Thank you!" within ".thread"
@@ -65,8 +66,8 @@ Feature: Rich text editor for Comments
       And I view <commentable> with comments
       And I follow "Edit"
       And I follow "Rich Text" within ".odd"
-      And I fill in Lexxy with "[:control, a]"
-      And I fill in Lexxy with "Actually, this is awesome"
+      And I send keys "[:control, a]" to Lexxy
+      And I send keys "Actually, this is awesome" to Lexxy
       And I press "Update"
     Then I should see "Actually, this is awesome"
       And I should see Last Edited in the right timezone
@@ -87,7 +88,7 @@ Feature: Rich text editor for Comments
     When I follow "Rich Text"
       And I fill in "comment[name]" with "guest"
       And I fill in "comment[email]" with "guest@example.org"
-      And I fill in Lexxy with "cats"
+      And I send keys "cats" to Lexxy
       And I press "Comment"
     Then I should see "Comment created!"
       And I should see the text with tags "<p>cats</p>"
