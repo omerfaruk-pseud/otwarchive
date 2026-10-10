@@ -1288,22 +1288,21 @@ en:
         rte_abbreviated: RTE
       page_heading: Rich Text
       pasting_formatting:
-        alignment:
-          css_abbreviated: CSS
-          css_for_inline_abbreviated: CSS
-          description_html: Text alignment is now generally achieved with %{css_abbreviation}, and because the Archive does not allow inline %{css_for_inline_abbreviation}, alignment will often be lost when pasting.
-          header: Alignment
+        alignment_direction:
+          description_html: Our %{rte_abbreviation} for comments doesn't support alignment or direction yet. You can use %{dir_tag_code} and %{align_tag_code} attributes in HTML editor to achieve them.
+          header: Alignment and Direction
           rte_abbreviated: RTE
-          when_it_works_html: Pasting from sources that use the %{align_tag_code} attribute and %{center_tag_code} element will keep the formatting intact, but please note that the alignment buttons in the %{rte_abbreviation} cannot modify center alignment created with the %{center_tag_code} tag.
         header: Pasting Specific Types of Formatting
         headings:
-          description_html: Text editors use many different styles for their heading presets. For example, selecting Heading 4 in OpenOffice produces italicized sans-serif text. Even when successfully pasting a heading into the %{rte_abbreviation}, this visual formatting is %{negation_italic} preserved -- only the %{h4_tag_code} tag is. This is not a bug. %{html_abbreviation} is designed to tell the browser what text means (e.g. "This is a heading") and not how it should be displayed (e.g. "This should be in Arial"). If you wish to modify the style of a heading or any other part of your work, please use a Work Skin.
+          description_html: Text editors use many different styles for their heading presets. For example, selecting Heading 4 in OpenOffice produces italicized sans-serif text. Even when successfully pasting a heading into the %{rte_abbreviation}, this visual formatting is %{negation_italic} preserved -- only the %{h4_tag_code} tag is. This is not a bug. %{html_abbreviation} is designed to tell the browser what text means (e.g. "This is a heading") and not how it should be displayed (e.g. "This should be in Arial").
           header: Headings
           html_abbreviated: HTML
           negation: not
           rte_abbreviated: RTE
+          rte_for_comments_abbreviated: RTE
+          three_header_limitation_html: Our %{rte_for_comments_abbreviation} for comments only has buttons for headings 2 to 4 for now, but if you paste from sources that has the correct tags; %{h1_tag_code}, %{h5_tag_code} and %{h6_tag_code} should be preserved.
         indented_text:
-          description_html: Indented text is a purely visual effect with no %{html_abbreviation} equivalent and will not be preserved. Please use a Work Skin to indent text.
+          description_html: Indented text is a purely visual effect with no %{html_abbreviation} equivalent and will not be preserved.
           header: Indented Text
           html_abbreviated: HTML
         underline_strikethrough:
@@ -1499,13 +1498,13 @@ en:
           when_it_works_html: Pasting from sources that use the %{align_tag_code} attribute and %{center_tag_code} element will keep the formatting intact, but please note that the alignment buttons in the %{rte_abbreviation} cannot modify center alignment created with the %{center_tag_code} tag.
         header: Pasting Specific Types of Formatting
         headings:
-          description_html: Text editors use many different styles for their heading presets. For example, selecting Heading 4 in OpenOffice produces italicized sans-serif text. Even when successfully pasting a heading into the %{rte_abbreviation}, this visual formatting is %{negation_italic} preserved -- only the %{h4_tag_code} tag is. This is not a bug. %{html_abbreviation} is designed to tell the browser what text means (e.g. "This is a heading") and not how it should be displayed (e.g. "This should be in Arial"). If you wish to modify the style of a heading or any other part of your work, please use a Work Skin.
+          description_html: Text editors use many different styles for their heading presets. For example, selecting Heading 4 in OpenOffice produces italicized sans-serif text. Even when successfully pasting a heading into the %{rte_abbreviation}, this visual formatting is %{negation_italic} preserved -- only the %{h4_tag_code} tag is. This is not a bug. %{html_abbreviation} is designed to tell the browser what text means (e.g. "This is a heading") and not how it should be displayed (e.g. "This should be in Arial").
           header: Headings
           html_abbreviated: HTML
           negation: not
           rte_abbreviated: RTE
         indented_text:
-          description_html: Indented text is a purely visual effect with no %{html_abbreviation} equivalent and will not be preserved. Please use a Work Skin to indent text.
+          description_html: Indented text is a purely visual effect with no %{html_abbreviation} equivalent and will not be preserved.
           header: Indented Text
           html_abbreviated: HTML
         underline_strikethrough:
