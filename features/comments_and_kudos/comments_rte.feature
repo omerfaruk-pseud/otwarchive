@@ -1,7 +1,6 @@
 @javascript
 Feature: Rich text editor for Comments
-
-  Scenario Outline: Using the Rich Text Editor
+  Scenario Outline: Using the RTE with hotkeys
     Given <commentable>
     When I am logged in as "commenter"
       And I view <commentable> with comments
@@ -29,9 +28,7 @@ Feature: Rich text editor for Comments
       | the work "Generic Work" |
       | the admin post "Five Things" |
 
-
-
-  Scenario Outline: Using the RTE for a reply
+  Scenario Outline: Using the RTE for replying
     Given <commentable>
       And a comment "This is beautiful" by "commenter" on <commentable>
     When I am logged in as "creator"
@@ -49,14 +46,24 @@ Feature: Rich text editor for Comments
       | the work "Generic Work" |
       | the admin post "Five Things" |
 
-  # Scenario: Using the RTE in a thread
-  # And I visit the reply page to the comment on "No Guest Comments Work"
-  # Then I should see "Thread"
+  Scenario Outline: Using the RTE for replying, in a thread
+    Given <commentable>
+      And a comment "This is beautiful" by "commenter" on <commentable>
+    When I am logged in as "creator"
+      And I view <commentable> with comments
+      And I follow "Thread"
+      And I follow "Reply" within ".odd"
+    Then I should see "Rich Text" within ".odd"
+    When I follow "Rich Text" within ".odd"
+      And I send keys "Thank you!" to Lexxy
+      And I press "Comment" within ".odd"
+    Then I should see "Comment created!"
+      And I should see "Thank you!" within ".thread"
 
-  # Using the RTE for editing, in a thread
-  # Then I should see "Comment was successfully updated"
-
-  # Using the RTE for replying, in a thread
+    Examples:
+      | commentable |
+      | the work "Generic Work" |
+      | the admin post "Five Things" |
 
   Scenario Outline: Using the RTE for editing a comment
     Given <commentable>
@@ -70,8 +77,29 @@ Feature: Rich text editor for Comments
       And I send keys "Actually, this is awesome" to Lexxy
       And I press "Update"
     Then I should see "Actually, this is awesome"
-      And I should see Last Edited in the right timezone
     But I should not see "This is OK"
+
+    Examples:
+      | commentable |
+      | the work "Generic Work" |
+      | the admin post "Five Things" |
+
+  Scenario Outline: Using the RTE for editing a comment, in a thread
+    Given <commentable>
+      And a comment "This is OK" by "commenter" on <commentable>
+    When I am logged in as "commenter"
+      And it is currently 1 second from now
+      And I view <commentable> with comments
+      And I follow "Thread"
+      And I follow "Edit"
+      And I follow "Rich Text" within ".odd"
+      And I send keys "[:control, a]" to Lexxy
+      And I send keys "Actually, this is awesome" to Lexxy
+      And I press "Update"
+    Then I should see "Actually, this is awesome"
+    But I should not see "This is OK"
+    When I reload the page
+    Then I should see "Comment was successfully updated"
 
     Examples:
       | commentable |
@@ -98,4 +126,20 @@ Feature: Rich text editor for Comments
       | the work "Generic Work" |
       | the admin post "Five Things" |
 
-  # Scenario: Getting out of editor area with keyboard
+  Scenario Outline: Getting out of editor area with keyboard
+    Given <commentable>
+    When I am logged in as "commenter"
+      And I view <commentable> with comments
+    Then I should see "Rich Text"
+    When I follow "Rich Text"
+      And I send keys "cats" to Lexxy
+      And I press the "tab" key
+      And I press the "tab" key
+      And I press the "enter" key
+    Then I should see "Comment created!"
+      And I should see the text with tags "<p>cats</p>"
+
+    Examples:
+      | commentable |
+      | the work "Generic Work" |
+      | the admin post "Five Things" |
