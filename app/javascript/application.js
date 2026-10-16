@@ -58,6 +58,8 @@ class EditingField {
     copyContentToHTML() {
         if(!this.rte.classList.contains("lexxy-editor--empty")) {
             this.html_editor.value = this.rte.value;
+        } else {
+            this.html_editor.value = null;
         }
     }
 
