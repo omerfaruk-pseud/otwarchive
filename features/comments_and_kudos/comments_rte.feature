@@ -143,3 +143,28 @@ Feature: Rich text editor for Comments
       | commentable |
       | the work "Generic Work" |
       | the admin post "Five Things" |
+
+  # TODO: Scenario: Using the RTE from inbox
+
+  Scenario: Using the RTE from the home page
+    Given the work "Generic Work" by "creator"
+      And I am logged in as "commenter"
+      And I post the comment "This is awesome!" on the work "Generic Work"
+    When I am logged in as "creator"
+      And I go to the homepage
+    Then I should see "commenter on Generic Work"
+      And I should see "This is awesome!"
+      And I should see a link "Reply"
+    When I follow "Reply" within ".latest.messages.module"
+      And I follow "Rich Text"
+      And I send keys "Thank you so much!" to Lexxy
+      And I press "Comment"
+    Then I should see "Comment created!"
+      And I should see "Thank you so much!" within ".thread"
+    When I go to the homepage
+    Then I should not see "Unread messages"
+      And I should not see "This is awesome!"
+    When I am logged in as "commenter"
+      And I go to the homepage
+    Then I should see "creator on Generic Work"
+      And I should see "Thank you so much!"
