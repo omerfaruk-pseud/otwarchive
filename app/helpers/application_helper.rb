@@ -4,10 +4,10 @@ module ApplicationHelper
 
   # TODO: Official recommendation from Rails indicates we should switch to
   # unobtrusive JavaScript instead of using anything like `link_to_function`
-  def link_to_function(name, *args, &block)
+  def link_to_function(name, *args)
     html_options = args.extract_options!.symbolize_keys
 
-    function = block_given? ? update_page(&block) : args[0] || ''
+    function = args[0] || ""
 
     onclick = "#{"#{html_options[:onclick]}; " if html_options[:onclick]}#{function}; return false;"
     href = html_options[:href] || 'javascript:void(0)'
@@ -205,16 +205,12 @@ module ApplicationHelper
       %w(new create edit update).include?(controller.action_name)
   end
 
+  # load JavaScript and CSS of Lexxy, this will use importmaps to also import node modules of Lexical and other necessary libraries  
   def use_lexxy
-    # TODO do we need to reset @content_for here?
-    content_for(:lexxy) { javascript_importmap_tags }
+    content_for(:lexxy, flush: true) { javascript_importmap_tags }
     content_for :lexxy do
       stylesheet_link_tag "/stylesheets/lexxy"
     end
-  end
-
-  def allow_lexxy?(controller)
-    true
   end
 
   # see: http://www.w3.org/TR/wai-aria/states_and_properties#aria-valuenow

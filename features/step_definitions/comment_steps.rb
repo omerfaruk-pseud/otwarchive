@@ -411,3 +411,26 @@ end
 When "I reply on a new page" do
   visit find(:link, "Reply")["href"]
 end
+
+# Capybara's fill_in method doesn't work with contenteditable div elements
+# TODO: elaborate
+When "I send keys {string} to {string}" do |keys, target|
+  parse_arr = lambda { |val|
+    if (md = /\[(.*)\]/.match(val))
+      [*md[1].split(",").map { |v| parse_arr.call(v) }]
+    elsif (md = /^:(.*)/.match(val))
+      md[1].to_sym
+    else
+      val.strip
+    end
+  }
+  find(target).base.send_keys(parse_arr.call(keys))
+end
+
+When "I send keys {string} to Lexxy" do |keys|
+  step %{I send keys "#{keys}" to ".lexxy-editor__content"}
+end
+
+When "I press the {string} key" do |key|
+  send_keys(key.to_sym)
+end

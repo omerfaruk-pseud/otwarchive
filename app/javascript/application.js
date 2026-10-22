@@ -13,7 +13,8 @@ Lexxy.configure({
                 "background-color": []
             }
         },
-        headings: [ "h1", "h2", "h3", "h4", "h5" ]
+        headings: [ "h1", "h2", "h3", "h4", "h5" ],
+        attachments: false
     }
 });
 
@@ -27,7 +28,7 @@ class EditingField {
         this.html_notes = comment_field.querySelector(".html-notes");
         this.rtf_notes = comment_field.querySelector(".rtf-notes");
 
-        this.get_ready();
+        this.getReady();
     }
 
     connect() {
@@ -82,9 +83,7 @@ class EditingField {
         this.html_link.classList.add("current");
         this.rtf_link.classList.remove("current");
 
-        if(!this.rte.classList.contains("lexxy-editor--empty")) {
-            this.html_editor.value = this.rte.value;
-        }
+        this.copyContentToHTML();
         this.disconnect();
 
         this.html_editor.classList.remove("hidden");
@@ -94,9 +93,21 @@ class EditingField {
         this.rtf_notes.classList.add("hidden");
     }
 
-    get_ready() {
+    copyContentToHTML() {
+        if(!this.rte.classList.contains("lexxy-editor--empty")) {
+            this.html_editor.value = this.rte.value;
+        } else {
+            this.html_editor.value = null;
+        }
+    }
+
+    getReady() {
         this.comment_field.querySelector(".rtf-html-switch").classList.remove('hidden');
         this.html_link.classList.add("current");
+
+        this.comment_field.querySelector("input[type=submit]").onclick = () => {
+            this.copyContentToHTML();
+        };
 
         this.rtf_link.onclick = (e) => {
             e.preventDefault();
@@ -104,7 +115,7 @@ class EditingField {
                 if (this.comment_field.querySelector("lexxy-editor")) {
                     this.switchToRTE();
                 } else {
-                    this.initialize_lexxy();
+                    this.initializeLexxy();
                 }
             }
         };
@@ -117,7 +128,7 @@ class EditingField {
         };
     }
 
-    initialize_lexxy() {
+    initializeLexxy() {
         let node = document.createRange().createContextualFragment("<lexxy-editor ></lexxy-editor>");
         this.comment_field.querySelector("#lexxy_parent").appendChild(node);
 
@@ -129,17 +140,24 @@ class EditingField {
             this.rte.setAttribute("class", attributes.dataset.class);
             this.rte.setAttribute("title", attributes.dataset.title);
             this.rte.setAttribute("name", attributes.dataset.name);
+            this.rte.setAttribute("aria-labelledby", attributes.dataset.labelledby);
             this.rte.setAttribute("id", attributes.dataset.id); // TODO: does this break validation and/or is the id it replaces used
 
             let selectors = "button[name=\"highlight\"], " +
-                "button[name=\"file\"], " +
-                "button[name=\"image\"], " +
-                "button[name=\"code\"]";
+                "button[name=\"code\"], " +
+                "lexxy-code-language-picker";
             if(this.rte.querySelectorAll(selectors).length > 0) {
                 this.rte.querySelectorAll(selectors).forEach((elem) => elem.parentNode.removeChild(elem)); // for IE compatibility
 
                 this.switchToRTE();
             }
+
+            let validation_for_rte = new LiveValidation(this.rte, { wait: 500, onlyOnBlur: false });
+            // validation_for_rte.add(Validate.Length, {"minimum":"12","tooShortMessage":"Brevity is the soul of wit, but we need your comment to have text in it."});
+            // the reason I commented out that line is Lexxy starts with a br in p when it's blank, making it 11
+            // characters. If we make 12 minimum, something like <p>cool</p> will fail too.
+            validation_for_rte.add(Validate.Length, {"maximum":"10000","tooLongMessage":"must be less than 10000 characters long."});
+            // TODO: i18n
 
             if(localStorage.getItem(this.rte.getAttribute("id"))) {
                 this.rte.value = localStorage.getItem(this.rte.getAttribute("id"));
@@ -148,7 +166,7 @@ class EditingField {
     }
 }
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
     let main_comment = document.querySelector("div.post.comment");
     if(main_comment !== null) {
         new EditingField(main_comment);
@@ -158,7 +176,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const config = { attributes: true, childList: true, subtree: true };
 
     // Callback function to execute when mutations are observed
-    const callback = (mutationList, observer) => {
+    const callback = (mutationList) => {
         for (const mutation of mutationList) {
             for (const addedNode of mutation.addedNodes) {
                 if (addedNode.classList != null && addedNode.matches("div.post.comment")) {

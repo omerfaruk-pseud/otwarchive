@@ -76,20 +76,20 @@
           <li><a class="html-link" href="#"><%= ts("HTML") %></a></li>
         </ul>
         <p class="rtf-html-instructions note">
-          <span class="html-notes"><%= allowed_html_instructions(page: "comment") %></span>
+          <span class="html-notes"><%= allowed_html_instructions(page: "comment", strip_images: comment.use_image_safety_mode?) %></span>
           <span class="hidden rtf-notes"><%= rich_text_instructions(page: "comment") %></span>
         </p>
     <% else %>
         <dl>
           <dt class="landmark"><%= t(".landmark.note") %>:</dt>
           <dd class="instructions comment_form"><%= t(".guest_instructions") %></dd>
-          <dt><%= f.label "name_for_#{commentable.id}", t(".guest_name") %></dt>
-          <dd>
+          <dt class="required"><%= f.label "name_for_#{commentable.id}", t(".guest_name") %></dt>
+          <dd class="required">
             <%= f.text_field :name, id: "comment_name_for_#{commentable.id}" %>
             <%= live_validation_for_field("comment_name_for_#{commentable.id}", failureMessage: t(".guest_name_failure")) %>
           </dd>
-          <dt><%= f.label "email_for_#{commentable.id}", t(".guest_email") %></dt>
-          <dd>
+          <dt class="required"><%= f.label "email_for_#{commentable.id}", t(".guest_email") %></dt>
+          <dd class="required">
             <%= f.text_field :email, id: "comment_email_for_#{commentable.id}" %>
             <%= live_validation_for_field("comment_email_for_#{commentable.id}", failureMessage: t(".guest_email_failure")) %>
           </dd>
@@ -106,17 +106,20 @@
 
       <p id="lexxy_parent">
         <% content_id = "comment_content_for_#{commentable.id}" %>
-        <label for="<%= content_id %>" class="landmark"><%= t(".landmark.comment") %></label>
+        <label for="<%= content_id %>" class="landmark" id="lexxy-label"><%= t(".landmark.comment") %></label>
         <% use_lexxy %>
-        <input type="hidden" id="lexxy_attributes" data-id="<%= content_id %>" data-class="comment_form observe_textlength" data-title="<%= t(".comment_field_title") %>" data-name="comment[comment_content]"></input>
+        <input type="hidden" id="lexxy_attributes" data-id="lexxy_<%= content_id %>" data-class="comment_form observe_textlength" data-title="<%= t(".comment_field_title") %>" data-name="comment[comment_content]" data-labelledby="lexxy-label"></input>
         <%= f.text_area :comment_content, id: content_id, class: "comment_form observe_textlength", title: t(".comment_field_title") %>
         <input type="hidden" id="controller_name_for_<%= commentable.id %>" name="controller_name" value="<%= @controller_name ||= controller.controller_name %>" />
       </p>
       <%= generate_countdown_html("comment_content_for_#{commentable.id}", ArchiveConfig.COMMENT_MAX) %>
-      <%#= live_validation_for_field "comment_content_for_#{commentable.id}",
+      <%= live_validation_for_field "comment_content_for_#{commentable.id}",
             failureMessage: t(".comment_too_short"),
             maximum_length: ArchiveConfig.COMMENT_MAX,
             tooLongMessage: t(".comment_too_long", count: ArchiveConfig.COMMENT_MAX) %>
+      <% unless logged_in? %>
+        <p class="footnote"><%= t(".guest_edit_warning") %></p>
+      <% end %>
       <p class="submit actions">
           <%= f.submit button_name, id: "comment_submit_for_#{commentable.id}", data: { disable_with: t(".processing_message") } %>
           <% if controller.controller_name == 'inbox' %>

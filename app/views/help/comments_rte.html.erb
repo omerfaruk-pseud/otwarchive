@@ -40,15 +40,15 @@
 
 <p><%= t(".pasting_formatting.underline_strikethrough.when_it_works_html", del_tag_code: tag.code("<del>"), s_tag_code: tag.code("<s>"), strike_tag_code: tag.code("<strike>"), u_tag_code: tag.code("<u>")) %></p>
 
-<h4><%= t(".pasting_formatting.alignment.header") %></h4>
+<h4><%= t(".pasting_formatting.alignment_direction.header") %></h4>
 
-<p><%= t(".pasting_formatting.alignment.description_html", css_abbreviation: tag.abbr(t(".pasting_formatting.alignment.css_abbreviated")), css_for_inline_abbreviation: tag.abbr(t(".pasting_formatting.alignment.css_for_inline_abbreviated"))) %></p>
-
-<p><%= t(".pasting_formatting.alignment.when_it_works_html", align_tag_code: tag.code("align"), center_tag_code: tag.code("<center>"), rte_abbreviation: tag.abbr(t(".pasting_formatting.alignment.rte_abbreviated"))) %></p>
+<p><%= t(".pasting_formatting.alignment_direction.description_html", rte_abbreviation: tag.abbr(t(".pasting_formatting.alignment_direction.rte_abbreviated")), align_tag_code: tag.code("align"), dir_tag_code: tag.code("dir")) %></p>
 
 <h4><%= t(".pasting_formatting.headings.header") %></h4>
 
 <p><%= t(".pasting_formatting.headings.description_html", h4_tag_code: tag.code("<h4>"), html_abbreviation: tag.abbr(t(".pasting_formatting.headings.html_abbreviated")), negation_italic: tag.em(t(".pasting_formatting.headings.negation")), rte_abbreviation: tag.abbr(t(".pasting_formatting.headings.rte_abbreviated"))) %></p>
+
+<p><%= t(".pasting_formatting.headings.three_header_limitation_html", h1_tag_code: tag.code("<h1>"), h5_tag_code: tag.code("<h5>"), h6_tag_code: tag.code("<h6>"), rte_for_comments_abbreviation: tag.abbr(t(".pasting_formatting.headings.rte_for_comments_abbreviated"))) %></p>
 
 <h4><%= t(".pasting_formatting.indented_text.header") %></h4>
 
