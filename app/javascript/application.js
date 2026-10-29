@@ -19,7 +19,7 @@ Lexxy.configure({
 class EditingField {
     constructor(comment_field) {
         this.comment_field = comment_field;
-        this.rte = null;
+        this.rte = null; // TODO: this probably is supposed to be temporary and need to be replaced with error handling of rte not loading properly
         this.html_editor = comment_field.querySelector("textarea.comment_form");
         this.html_link = comment_field.querySelector(".html-link");
         this.rtf_link = comment_field.querySelector(".rtf-link");
@@ -68,6 +68,12 @@ class EditingField {
         this.html_link.classList.add("current");
 
         this.comment_field.querySelector("input[type=submit]").onclick = () => {
+            if(this.rte.classList.contains("lexxy-editor--empty")) {
+                this.rte.setCustomValidity("Brevity");
+            } else {
+                this.rte.setCustomValidity("");
+            }
+            this.rte.reportValidity();
             this.copyContentToHTML();
         };
 
