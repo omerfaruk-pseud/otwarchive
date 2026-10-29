@@ -105,6 +105,9 @@ class EditingField {
             this.rte.setAttribute("aria-labelledby", attributes.dataset.labelledby);
             this.rte.setAttribute("id", attributes.dataset.id); // TODO: does this break validation and/or is the id it replaces used
 
+            this.rte.querySelector("lexxy-toolbar").setAttribute("aria-label", attributes.dataset.toolbarlabel);
+            this.rte.querySelector(".lexxy-editor__content").setAttribute("aria-label", attributes.dataset.editorlabel);
+
             let selectors = "button[name=\"highlight\"], " +
                 "button[name=\"code\"], " +
                 "lexxy-code-language-picker";
