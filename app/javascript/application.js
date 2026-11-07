@@ -69,13 +69,20 @@ class EditingField {
 
         this.comment_field.querySelector("input[type=submit]").onclick = () => {
             if(this.rte.classList.contains("lexxy-editor--empty")) {
-                this.rte.setCustomValidity("Brevity");
+                let validation_messages = this.comment_field.querySelector("#lexxy_validation");
+                this.rte.setCustomValidity(validation_messages.dataset.commenttooshort);
             } else {
                 this.rte.setCustomValidity("");
             }
             this.rte.reportValidity();
-            this.copyContentToHTML();
         };
+
+        const update_button = this.comment_field.querySelector("input[value=Update]");
+        if(update_button) {
+            update_button.onclick = () => {
+                this.copyContentToHTML();
+            };
+        }
 
         this.rtf_link.onclick = (e) => {
             e.preventDefault();
@@ -122,13 +129,6 @@ class EditingField {
 
                 this.switchToRTE();
             }
-
-            let validation_for_rte = new LiveValidation(this.rte, { wait: 500, onlyOnBlur: false });
-            // validation_for_rte.add(Validate.Length, {"minimum":"12","tooShortMessage":"Brevity is the soul of wit, but we need your comment to have text in it."});
-            // the reason I commented out that line is Lexxy starts with a br in p when it's blank, making it 11
-            // characters. If we make 12 minimum, something like <p>cool</p> will fail too.
-            validation_for_rte.add(Validate.Length, {"maximum":"10000","tooLongMessage":"must be less than 10000 characters long."});
-            // TODO: i18n
         });
     }
 }
