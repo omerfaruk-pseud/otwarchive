@@ -91,7 +91,7 @@
         <li><a class="rtf-link" href="#"><%= t(".rte_button") %></a></li>
         <li><a class="html-link" href="#"><%= t(".html_button") %></a></li>
       </ul>
-      <p class="rtf-html-instructions note">  <!-- TODO note or footnote as class? -->
+      <p class="rtf-html-instructions note">
         <% strip_images = logged_in? ? comment.use_image_safety_mode? : true %>
         <span class="html-notes"><%= allowed_html_instructions(page: "comment", strip_images: strip_images) %></span>
         <span class="hidden rtf-notes"><%= rich_text_instructions(page: "comment") %></span>
