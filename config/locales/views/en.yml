@@ -939,12 +939,14 @@ en:
       guest_instructions: All fields are required. Your name and comment text will both be publicly displayed. Your email address will not be made public, but it will be used to send you notifications of any replies to your comment.
       guest_name: Guest name (required)
       guest_name_failure: Please enter your name.
+      html_button: HTML
       inbox_reference_html: to %{commentable_creator} on %{commentable_link}
       landmark:
         comment: Comment
         note: Note
       legend: Post Comment
       processing_message: Please wait...
+      rte_button: Rich Text
     commentable:
       actions:
         comment: Comment
