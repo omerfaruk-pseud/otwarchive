@@ -71,15 +71,7 @@
           <% comment.set_parent_and_unreviewed %>
           <% comment.pseud = current_user.default_pseud %>
         <% end %>
-        <ul class="hidden rtf-html-switch actions" role="menu">
-          <li><a class="rtf-link" href="#"><%= ts("Rich Text") %></a></li>
-          <li><a class="html-link" href="#"><%= ts("HTML") %></a></li>
-        </ul>
-        <p class="rtf-html-instructions note">
-          <span class="html-notes"><%= allowed_html_instructions(page: "comment", strip_images: comment.use_image_safety_mode?) %></span>
-          <span class="hidden rtf-notes"><%= rich_text_instructions(page: "comment") %></span>
-        </p>
-    <% else %>
+      <% else %>
         <dl>
           <dt class="landmark"><%= t(".landmark.note") %>:</dt>
           <dd class="instructions comment_form"><%= t(".guest_instructions") %></dd>
@@ -94,15 +86,16 @@
             <%= live_validation_for_field("comment_email_for_#{commentable.id}", failureMessage: t(".guest_email_failure")) %>
           </dd>
         </dl>
-        <ul class="hidden rtf-html-switch actions" role="menu">
-          <li><a class="rtf-link" href="#"><%= ts("Rich Text") %></a></li> <!-- TODO i18n -->
-          <li><a class="html-link" href="#"><%= ts("HTML") %></a></li>
-        </ul>
-        <p class="rtf-html-instructions note">  <!-- TODO note or footnote as class? -->
-          <span class="html-notes"><%= allowed_html_instructions(page: "comment", strip_images: true) %></span>
-          <span class="hidden rtf-notes"><%= rich_text_instructions(page: "comment") %></span>
-        </p>
       <% end %>
+      <ul class="hidden rtf-html-switch actions" role="menu">
+        <li><a class="rtf-link" href="#"><%= ts("Rich Text") %></a></li> <!-- TODO i18n -->
+        <li><a class="html-link" href="#"><%= ts("HTML") %></a></li>
+      </ul>
+      <p class="rtf-html-instructions note">  <!-- TODO note or footnote as class? -->
+        <% strip_images = logged_in? ? comment.use_image_safety_mode? : true %>
+        <span class="html-notes"><%= allowed_html_instructions(page: "comment", strip_images: strip_images) %></span>
+        <span class="hidden rtf-notes"><%= rich_text_instructions(page: "comment") %></span>
+      </p>
 
       <p id="lexxy_parent">
         <% content_id = "comment_content_for_#{commentable.id}" %>
